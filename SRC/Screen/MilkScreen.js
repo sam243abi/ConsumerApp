@@ -92,7 +92,7 @@ const MilkScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
   },
   header: {
     fontSize: 22,
@@ -105,11 +105,11 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#f7f7f7",
-    padding: 22,
+    backgroundColor: "#ffffff",
+    padding: 20,
     marginBottom: 16,
     borderRadius: 8,
-    borderColor: "#e0e0e0",
+    borderColor: "#9dd694",
     borderWidth: 1,
   },
   image: {
@@ -132,15 +132,20 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   button: {
-    backgroundColor: "#e0f7ef",
-    borderRadius: 6,
+    backgroundColor: "#d1fae5",
+    borderRadius: 8,
     paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 11,
+    borderColor: "#22d3ee",
+    borderWidth:2,
+    marginTop:55,
+    
   },
   buttonText: {
-    color: "#10c295",
+    color: "#064e3b",   
     fontSize: 14,
     fontWeight: "600",
+    
   },
   bottomNav: {
     position: "absolute",

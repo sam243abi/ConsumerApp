@@ -1,16 +1,45 @@
 import React, { useState } from 'react';
-import { View, Text, Keyboard, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Keyboard,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-import Geocoder from 'react-native-geocoding';
 
-Geocoder.init('AIzaSyBv5qP0vdJ4PR5Qvj9LjYv5SE0GWrhg-50');
+const sampleLocations = [
+  {
+    latitude: 13.0827,
+    longitude: 80.2707,
+    street: 'Anna Salai',
+    city: 'Chennai',
+    postalCode: '600002',
+  },
+  {
+    latitude: 13.0674,
+    longitude: 80.2376,
+    street: 'Mylapore',
+    city: 'Chennai',
+    postalCode: '600004',
+  },
+  {
+    latitude: 13.0924,
+    longitude: 80.2016,
+    street: 'Ambattur',
+    city: 'Chennai',
+    postalCode: '600053',
+  },
+];
 
 const DeliveryAddress = () => {
   const navigation = useNavigation();
-  const onSubmit = () => {
-    navigation.navigate('Intro');
-  };
   const [region, setRegion] = useState({
     latitude: 13.0827,
     longitude: 80.2707,
@@ -22,58 +51,43 @@ const DeliveryAddress = () => {
     longitude: 80.2707,
   });
   const [address, setAddress] = useState({
-    apartment: '',
     street: '',
     city: '',
     postalCode: '',
-    landmark: '',
   });
 
-  const handleMapPress = async (e) => {
+  const handleMapPress = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
 
-    setMarker({
-      latitude,
-      longitude,
-    });
+    setMarker({ latitude, longitude });
 
-    try {
-      const result = await Geocoder.from(latitude, longitude);
-      const addressComponents = result.results[0].address_components;
+    const matchedLocation = sampleLocations.find(
+      (loc) =>
+        Math.abs(loc.latitude - latitude) < 0.05 &&
+        Math.abs(loc.longitude - longitude) < 0.05
+    );
 
-      let street = '';
-      let city = '';
-      let postalCode = '';
-
-      addressComponents.forEach(component => {
-        if (component.types.includes('route')) {
-          street = component.long_name;
-        }
-        if (component.types.includes('locality')) {
-          city = component.long_name;
-        }
-        if (component.types.includes('postal_code')) {
-          postalCode = component.long_name;
-        }
-      });
-
-      setAddress({
-        ...address,
-        street: street || '',
-        city: city || '',
-        postalCode: postalCode || '',
-        landmark: '',
-      });
-
-      setRegion({
-        ...region,
-        latitude,
-        longitude,
-      });
-    } catch (error) {
-      console.error(error);
-      alert('Could not fetch address. Please try again.');
+    if (matchedLocation) {
+      setAddress((prev) => ({
+        ...prev,
+        street: matchedLocation.street,
+        city: matchedLocation.city,
+        postalCode: matchedLocation.postalCode,
+      }));
+    } else {
+      setAddress((prev) => ({
+        ...prev,
+        street: 'Unknown Street',
+        city: 'Unknown City',
+        postalCode: '000000',
+      }));
     }
+
+    setRegion({ ...region, latitude, longitude });
+  };
+
+  const onSubmit = () => {
+    navigation.navigate('Intro');
   };
 
   return (
@@ -97,40 +111,31 @@ const DeliveryAddress = () => {
 
           <TextInput
             style={styles.input}
-            placeholder="Apartment"
-            value={address.apartment}
-            onChangeText={(text) => setAddress((prev) => ({ ...prev, apartment: text }))}
-          />
-          <TextInput
-            style={styles.input}
             placeholder="Street"
             value={address.street}
-            onChangeText={(text) => setAddress((prev) => ({ ...prev, street: text }))}
+            onChangeText={(text) =>
+              setAddress((prev) => ({ ...prev, street: text }))
+            }
           />
           <TextInput
             style={styles.input}
             placeholder="City"
             value={address.city}
-            onChangeText={(text) => setAddress((prev) => ({ ...prev, city: text }))}
+            onChangeText={(text) =>
+              setAddress((prev) => ({ ...prev, city: text }))
+            }
           />
           <TextInput
             style={styles.input}
             placeholder="Postal Code"
             value={address.postalCode}
-            onChangeText={(text) => setAddress((prev) => ({ ...prev, postalCode: text }))}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Landmark"
-            value={address.landmark}
-            onChangeText={(text) => setAddress((prev) => ({ ...prev, landmark: text }))}
+            onChangeText={(text) =>
+              setAddress((prev) => ({ ...prev, postalCode: text }))
+            }
           />
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={onSubmit}
-            >
+            <TouchableOpacity style={styles.button} onPress={onSubmit}>
               <Text style={styles.buttonText}>Find Location</Text>
             </TouchableOpacity>
           </View>
@@ -189,7 +194,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 10,
     marginTop: 20,
-    top:-30
   },
   buttonText: {
     color: '#333',

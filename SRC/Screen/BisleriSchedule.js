@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   planButton: {
-    backgroundColor: '#E0F0FF',
+    backgroundColor: '#9dd694',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,

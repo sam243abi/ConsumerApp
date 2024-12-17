@@ -16,7 +16,7 @@ const DailyPage = ({ navigation }) => {
         [{ text: 'OK' }]
       );
     } else {
-      navigation.navigate('SubscriptionStartScreen');
+      navigation.navigate('Review', { selectedPlan: 'Daily' });
     }
   };
 
@@ -42,7 +42,7 @@ const DailyPage = ({ navigation }) => {
     if (selectedDate) {
       markedDates[selectedDate] = {
         selected: true,
-        selectedColor: '#004AAD',
+        selectedColor: '#9dd694',
       };
 
       const selectedMoment = moment(selectedDate);
@@ -50,7 +50,7 @@ const DailyPage = ({ navigation }) => {
         const nextDate = selectedMoment.clone().add(i, 'days').format('YYYY-MM-DD');
         markedDates[nextDate] = {
           marked: true,
-          dotColor: '#004AAD', 
+          dotColor: '#064e3b', 
         };
       }
     }
@@ -71,8 +71,8 @@ const DailyPage = ({ navigation }) => {
         markedDates={generateMarkedDates()} 
         theme={{
           selectedDayBackgroundColor: '#004AAD',
-          todayTextColor: '#004AAD',
-          arrowColor: '#004AAD',
+          todayTextColor: '#185f46',
+          arrowColor: '#9dd694',
           dayTextColor: '#000',
           textDisabledColor: '#d9e1e8',
         }}
@@ -126,27 +126,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   quantityButton: {
-    backgroundColor: '#E0F0FF',
+    backgroundColor: '#9dd694',
     padding: 10,
     borderRadius: 10,
   },
   quantityButtonText: {
     fontSize: 18,
-    color: '#004AAD',
+    color: '#064e3b',
   },
   quantity: {
     fontSize: 18,
     marginHorizontal: 20,
   },
   confirmButton: {
-    backgroundColor: '#004AAD',
+    backgroundColor: '#9dd694',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 30,
   },
   confirmButtonText: {
-    color: '#fff',
+    color: '#064e3b',
     fontSize: 16,
     fontWeight: 'bold',
   },

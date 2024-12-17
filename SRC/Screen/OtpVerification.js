@@ -1,47 +1,55 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Animated, Keyboard } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Keyboard,
+  Animated,
+  Platform,
+} from 'react-native';
 
 const OtpVerification = ({ navigation }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(60);
   const [error, setError] = useState(false);
   const inputRefs = useRef([]);
-  const moveAnim = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    let interval = null;
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [timer]);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', (event) => {
-      Animated.timing(moveAnim, {
-        toValue: -60, 
-        duration: event.duration || 250,
+    const handleKeyboardWillShow = (event) => {
+      Animated.timing(translateY, {
+        toValue: -event.endCoordinates.height / 1.5,
+        duration: Platform.OS === 'ios' ? event.duration : 300,
         useNativeDriver: true,
       }).start();
-    });
+    };
 
-    const keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', (event) => {
-      Animated.timing(moveAnim, {
+    const handleKeyboardWillHide = () => {
+      Animated.timing(translateY, {
         toValue: 0,
-        duration: event.duration || 250,
+        duration: 300,
         useNativeDriver: true,
       }).start();
-    });
+    };
+
+    const keyboardShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      handleKeyboardWillShow
+    );
+    const keyboardHideListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      handleKeyboardWillHide
+    );
 
     return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
     };
-  }, [moveAnim]);
+  }, []);
 
   const handleOtpChange = (index, value) => {
     if (/^[0-9]$/.test(value) || value === '') {
@@ -62,21 +70,17 @@ const OtpVerification = ({ navigation }) => {
 
   const handleCompleteProfile = () => {
     if (otp.some((digit) => digit === '')) {
-      setError(true); 
+      setError(true);
     } else {
       setError(false);
-      navigation.navigate('ProfileCompletion');  
+      navigation.navigate('Profile');
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-    >
+    <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <Animated.View style={[styles.animatedContainer, { transform: [{ translateY: moveAnim }] }]}>
+        <Animated.View style={[styles.animatedContainer, { transform: [{ translateY }] }]}>
           <Text style={styles.title}>Enter OTP to Verify Your Identity</Text>
           <Text style={styles.subtitle}>Check for the OTP we sent and enter it here:</Text>
 
@@ -106,6 +110,7 @@ const OtpVerification = ({ navigation }) => {
           <Text style={styles.timerText}>
             {timer > 0 ? `Wait for 00:${timer.toString().padStart(2, '0')}` : '00:00'}
           </Text>
+
           <TouchableOpacity
             style={styles.resendButton}
             onPress={handleResendOtp}
@@ -113,10 +118,8 @@ const OtpVerification = ({ navigation }) => {
           >
             <Text style={{ color: timer > 0 ? 'gray' : 'blue' }}>SEND AGAIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.Button}
-            onPress={handleCompleteProfile}
-          >
+
+          <TouchableOpacity style={styles.Button} onPress={handleCompleteProfile}>
             <Text style={styles.ButtonText}>Complete Profile</Text>
           </TouchableOpacity>
         </Animated.View>
@@ -143,19 +146,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10, // Reduced margin for tighter placement
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 15,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 30, // Adjusted for better spacing below the title
     textAlign: 'center',
   },
   otpContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    justifyContent: 'center',
+    marginBottom: 40, // More spacing below OTP inputs
   },
   otpInput: {
     borderWidth: 1,
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     height: 50,
     textAlign: 'center',
     fontSize: 18,
-    marginHorizontal: 5,
+    marginHorizontal: 8, // Consistent spacing between input boxes
   },
   inputError: {
     borderColor: 'red',
@@ -173,14 +175,14 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 12,
-    marginBottom: 10,
+    marginBottom: 20, // Added spacing below error text
   },
   timerText: {
     fontSize: 16,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   resendButton: {
-    marginBottom: 20,
+    marginBottom: 30, // Added spacing below resend button
   },
   Button: {
     backgroundColor: 'lightgreen',

@@ -19,7 +19,7 @@ const AlternateDays = ({ navigation }) => {
     if (selectedDate) {
       markedDates[selectedDate] = {
         selected: true,
-        selectedColor: '#004AAD',
+        selectedColor: '#9dd694',
       };
 
       const selectedMoment = moment(selectedDate);
@@ -27,7 +27,7 @@ const AlternateDays = ({ navigation }) => {
         const alternateDate = selectedMoment.clone().add(i * 2, 'days').format('YYYY-MM-DD');
         markedDates[alternateDate] = {
           marked: true,
-          dotColor: '#004AAD',
+          dotColor: '#064e3b',
         };
       }
     }
@@ -42,8 +42,8 @@ const AlternateDays = ({ navigation }) => {
         markedDates={generateAlternateDates()}
         theme={{
           selectedDayBackgroundColor: '#004AAD',
-          todayTextColor: '#004AAD',
-          arrowColor: '#004AAD',
+          todayTextColor: '#064e3b',
+          arrowColor: '#9dd694',
         }}
       />
       {selectedDate && (
@@ -60,7 +60,7 @@ const AlternateDays = ({ navigation }) => {
           </View>
         </View>
       )}
-      <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('SubscriptionStartScreen')}>
+      <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('Review', { selectedPlan: 'AlternateDays' })}>
         <Text style={styles.confirmButtonText}>Confirm</Text>
       </TouchableOpacity>
     </View>
@@ -98,20 +98,20 @@ const styles = StyleSheet.create({
 },
   quantityButtonText: { 
     fontSize: 18, 
-    color: '#004AAD' 
+    color: '#064e3b' 
 },
   quantity: { 
     fontSize: 18, 
     marginHorizontal: 20
 },
   confirmButton: { 
-    backgroundColor: '#004AAD', 
+    backgroundColor: '#9dd694', 
     padding: 15, borderRadius: 10, 
     alignItems: 'center', 
     marginTop: 30 
 },
   confirmButtonText: { 
-    color: '#fff', 
+    color: '#064e3b', 
     fontSize: 16, 
     fontWeight: 'bold'
 },

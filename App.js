@@ -23,15 +23,17 @@ import Bisleri from './SRC/Screen/Bisleri';
 import BisleriSchedule from './SRC/Screen/BisleriSchedule';
 const Stack = createStackNavigator();
 import MilkScreen from "./SRC/Screen/MilkScreen";
+import VendorDetailsScreen from './SRC/Screen/VendoeDetailsScreen';
+import Review from './SRC/Screen/Review'
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="HomeScreen">
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Phone Number Verification" component={PhoneVerification} />
-        <Stack.Screen name="OTP Verification" component={OtpVerification} />
-        <Stack.Screen name="ProfileCompletion" component={ProfileCompletion} />
+        <Stack.Screen name="OTP Verify" component={OtpVerification} />
+        <Stack.Screen name="Profile" component={ProfileCompletion} />
         <Stack.Screen name="DeliveryAddress" component={DeliveryAddress} />
         <Stack.Screen name="Intro" component={SlideShow} />
         <Stack.Screen name="HeritageSchedule" component={Schedule} />
@@ -49,6 +51,8 @@ const App = () => {
         <Stack.Screen name="BisleriSchedule" component={BisleriSchedule} />
         <Stack.Screen name="SubscriptionStartScreen" component={SubscriptionStartScreen} />
         <Stack.Screen name="MilkScreen" component={MilkScreen} />
+        <Stack.Screen name="VendorDS" component={VendorDetailsScreen} />
+        <Stack.Screen name="Review" component={Review} />
       </Stack.Navigator>
     </NavigationContainer>
   );

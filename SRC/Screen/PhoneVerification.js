@@ -1,12 +1,60 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform ,TouchableWithoutFeedback} from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  Keyboard,
+  Animated,
+  Easing,
+  Platform,
+  TouchableWithoutFeedback,
+} from 'react-native';
+
 const PhoneVerification = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const slideAnim = useRef(new Animated.Value(0)).current; // Animation value
+
+  useEffect(() => {
+    const keyboardShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      handleKeyboardShow
+    );
+    const keyboardHideListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      handleKeyboardHide
+    );
+
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, []);
+
+  const handleKeyboardShow = (event) => {
+    Animated.timing(slideAnim, {
+      toValue: -200, // Adjust how far the page moves upward
+      duration: 300, // Animation duration (milliseconds)
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleKeyboardHide = () => {
+    Animated.timing(slideAnim, {
+      toValue: 0, // Reset position
+      duration: 300,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  };
 
   const handlePhoneNumberChange = (text) => {
-    const formattedText = text.replace(/[^0-9]/g, ''); 
+    const formattedText = text.replace(/[^0-9]/g, ''); // Only allow numbers
     setPhoneNumber(formattedText);
   };
 
@@ -20,58 +68,41 @@ const PhoneVerification = ({ navigation }) => {
       setErrorMessage('*Phone number must be exactly 10 digits');
     } else {
       setErrorMessage('');
-      navigation.navigate('OTP Verification');
+      navigation.navigate('OTP Verify');
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      keyboardVerticalOffset={100} 
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.inner}>
-          <Text style={styles.title}>Verify Your Phone Number</Text>
-          <Text style={styles.subtitle}>Let's Get Started</Text>
-          <Image source={require('./images/PHV.jpg')} style={styles.image} />
-          <View style={styles.phoneInputContainer}>
-            <View style={styles.prefixContainer}>
-              <Text style={styles.prefixText}>+91</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Phone Number"
-              keyboardType="phone-pad"
-              maxLength={10}
-              value={phoneNumber}
-              onChangeText={handlePhoneNumberChange}
-              onSubmitEditing={handleVerifyOTP} 
-            />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Animated.View style={[styles.container, { transform: [{ translateY: slideAnim }] }]}>
+        <Text style={styles.title}>Verify Your Phone Number</Text>
+        <Text style={styles.subtitle}>Let's Get Started</Text>
+        <Image source={require('./images/PHV.jpg')} style={styles.image} />
+        <View style={styles.phoneInputContainer}>
+          <View style={styles.prefixContainer}>
+            <Text style={styles.prefixText}>+91</Text>
           </View>
-          {errorMessage ? (
-            <Text style={styles.errorText}>{errorMessage}</Text>
-          ) : null}
-          <View style={styles.cbContainer}>
-            <TouchableOpacity
-              style={styles.cb}
-              onPress={() => setIsChecked(!isChecked)}
-            >
-              <Text style={styles.cbtext}>
-                {isChecked ? '☑️' : '⬜️'}
-              </Text>
-            </TouchableOpacity>
-            <Text style={styles.label}>I accept the Terms and Conditions</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.Button}
-            onPress={handleVerifyOTP}
-          >
-            <Text style={styles.ButtonText}>Verify OTP</Text>
-          </TouchableOpacity>
+          <TextInput
+            style={styles.input}
+            placeholder="Phone Number"
+            keyboardType="phone-pad"
+            maxLength={10}
+            value={phoneNumber}
+            onChangeText={handlePhoneNumberChange}
+          />
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+        <View style={styles.cbContainer}>
+          <TouchableOpacity style={styles.cb} onPress={() => setIsChecked(!isChecked)}>
+            <Text style={styles.cbtext}>{isChecked ? '☑️' : '⬜️'}</Text>
+          </TouchableOpacity>
+          <Text style={styles.label}>I accept the Terms and Conditions</Text>
+        </View>
+        <TouchableOpacity style={styles.Button} onPress={handleVerifyOTP}>
+          <Text style={styles.ButtonText}>Verify OTP</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -79,9 +110,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  inner: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,

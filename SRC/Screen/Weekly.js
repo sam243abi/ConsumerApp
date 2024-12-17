@@ -53,7 +53,7 @@ const Weekly = ({ navigation }) => {
   const calculateNextDeliveryDays = (startDate) => {
     if (!startDate) return {};
     const start = new Date(startDate);
-    const markedDates = { [startDate]: { selected: true, selectedColor: '#004AAD', selectedTextColor: 'white' } };
+    const markedDates = { [startDate]: { selected: true, selectedColor: '#9dd694', selectedTextColor: 'white' } };
     
     for (let i = 1; i <= 30; i++) {
       const nextDay = new Date(start);
@@ -62,7 +62,7 @@ const Weekly = ({ navigation }) => {
       const formattedDate = nextDay.toISOString().split('T')[0];
       const selectedDay = Object.keys(dayOfWeekMap).find(key => dayOfWeekMap[key] === dayOfWeek);
       if (selectedDays.includes(selectedDay)) {
-        markedDates[formattedDate] = { marked: true, dotColor: '#004AAD' };
+        markedDates[formattedDate] = { marked: true, dotColor: '#064e3b' };
       }
     }
 
@@ -121,13 +121,13 @@ const Weekly = ({ navigation }) => {
         theme={{
           selectedDayBackgroundColor: '#004AAD',
           selectedDayTextColor: 'white',
-          dotColor: '#004AAD',
-          todayTextColor: '#004AAD',
-          arrowColor: '#004AAD',
+          dotColor: '#064e3b',
+          todayTextColor: '#064e3b',
+          arrowColor: '#9dd694',
         }}
       />
 
-      <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('SubscriptionStartScreen')}>
+      <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('Review', { selectedPlan: 'Weekly' })}>
         <Text style={styles.confirmButtonText}>Confirm</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0' 
   },
   selectedDayButton: { 
-    backgroundColor: '#004AAD' 
+    backgroundColor: '#9dd694' 
   },
   dayText: {
     fontSize: 16 
@@ -180,27 +180,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center' 
   },
   quantityButton: { 
-    backgroundColor: '#E0F0FF', 
+    backgroundColor: '#9dd694', 
     padding: 10, 
     borderRadius: 10 
   },
   quantityButtonText: { 
     fontSize: 18, 
-    color: '#004AAD' 
+    color: '#064e3b' 
   },
   quantityText: { 
     fontSize: 16, 
     marginHorizontal: 10 
   },
   confirmButton: { 
-    backgroundColor: '#004AAD', 
+    backgroundColor: '#9dd694', 
     padding: 15, 
     borderRadius: 10, 
     alignItems: 'center', 
     marginTop: 30 
   },
   confirmButtonText: { 
-    color: '#fff', 
+    color: '#064e3b', 
     fontSize: 16, 
     fontWeight: 'bold' 
   },

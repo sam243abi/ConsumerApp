@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View,Keyboard,Text,TouchableOpacity,StyleSheet,KeyboardAvoidingView,ScrollView,TextInput,TouchableWithoutFeedback,Platform,Animated,} from 'react-native';
+import {View,Keyboard,Text,TouchableOpacity,StyleSheet,KeyboardAvoidingView,ScrollView,TextInput,TouchableWithoutFeedback,Platform,Animated,Alert,} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
@@ -44,6 +44,11 @@ const ProfileCompletion = ({ navigation }) => {
     setDob(formatted);
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex to check valid email format
+    return emailRegex.test(email);
+  };
+
   const validateFields = () => {
     const errors = {
       firstName: '',
@@ -60,6 +65,9 @@ const ProfileCompletion = ({ navigation }) => {
     }
     if (!email) {
       errors.email = '*Please enter your email.';
+    } else if (!validateEmail(email)) {
+      Alert.alert('Invalid Email', 'Provide a valid email ID');
+      errors.email = '*Invalid email format.';
     }
     if (!dob) {
       errors.dob = '*Please enter your date of birth.';
@@ -94,6 +102,7 @@ const ProfileCompletion = ({ navigation }) => {
       keyboardDidShowListener.remove();
     };
   }, []);
+
   const translateY = keyboardHeight.interpolate({
     inputRange: [0, 300],
     outputRange: [0, -1],
@@ -290,5 +299,6 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -160 }],
   },
 });
+
 
 export default ProfileCompletion;
