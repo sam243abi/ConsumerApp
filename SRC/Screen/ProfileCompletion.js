@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {View,Keyboard,Text,TouchableOpacity,StyleSheet,KeyboardAvoidingView,ScrollView,TextInput,TouchableWithoutFeedback,Platform,Animated,Alert,} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { globalStyles } from './styles/global';
 
 const ProfileCompletion = ({ navigation }) => {
   const [dob, setDob] = useState('');
@@ -45,7 +46,7 @@ const ProfileCompletion = ({ navigation }) => {
   };
 
   const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex to check valid email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
@@ -201,14 +202,14 @@ const ProfileCompletion = ({ navigation }) => {
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={globalStyles.SignButton}
               onPress={() => {
                 if (validateFields()) {
                   navigation.navigate('DeliveryAddress');
                 }
               }}
             >
-              <Text style={styles.buttonText}>Next</Text>
+              <Text style={globalStyles.SignButtonT}>Next</Text>
             </TouchableOpacity>
           </View>
           <DateTimePickerModal
@@ -270,23 +271,23 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 200,
     left: 0,
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: 'lightgreen',
-    borderColor: 'darkgreen',
+    backgroundColor: '#9dd694',
+    borderColor: '#064e3b',
     borderWidth: 2,
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,
-    transform: [{ translateY: -150 }],
+    marginTop: 20,
   },
   buttonText: {
-    color: '#333',
+    color: '#064e3b',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -299,6 +300,5 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -160 }],
   },
 });
-
 
 export default ProfileCompletion;

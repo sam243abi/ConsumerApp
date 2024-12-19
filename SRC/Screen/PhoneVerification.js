@@ -1,23 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Keyboard,
-  Animated,
-  Easing,
-  Platform,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View,Text,StyleSheet,TextInput,Image,TouchableOpacity,Keyboard,Animated,Easing,Platform,TouchableWithoutFeedback} from 'react-native';
+import { globalStyles } from './styles/global';
 
 const PhoneVerification = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const slideAnim = useRef(new Animated.Value(0)).current; // Animation value
+  const slideAnim = useRef(new Animated.Value(0)).current; 
 
   useEffect(() => {
     const keyboardShowListener = Keyboard.addListener(
@@ -37,8 +26,8 @@ const PhoneVerification = ({ navigation }) => {
 
   const handleKeyboardShow = (event) => {
     Animated.timing(slideAnim, {
-      toValue: -200, // Adjust how far the page moves upward
-      duration: 300, // Animation duration (milliseconds)
+      toValue: -200,
+      duration: 300, 
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
     }).start();
@@ -46,7 +35,7 @@ const PhoneVerification = ({ navigation }) => {
 
   const handleKeyboardHide = () => {
     Animated.timing(slideAnim, {
-      toValue: 0, // Reset position
+      toValue: 0,
       duration: 300,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
@@ -54,7 +43,7 @@ const PhoneVerification = ({ navigation }) => {
   };
 
   const handlePhoneNumberChange = (text) => {
-    const formattedText = text.replace(/[^0-9]/g, ''); // Only allow numbers
+    const formattedText = text.replace(/[^0-9]/g, ''); 
     setPhoneNumber(formattedText);
   };
 
@@ -98,8 +87,8 @@ const PhoneVerification = ({ navigation }) => {
           </TouchableOpacity>
           <Text style={styles.label}>I accept the Terms and Conditions</Text>
         </View>
-        <TouchableOpacity style={styles.Button} onPress={handleVerifyOTP}>
-          <Text style={styles.ButtonText}>Verify OTP</Text>
+        <TouchableOpacity style={globalStyles.SignButton} onPress={handleVerifyOTP}>
+          <Text style={globalStyles.SignButtonT}>Verify OTP</Text>
         </TouchableOpacity>
       </Animated.View>
     </TouchableWithoutFeedback>
@@ -172,20 +161,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
   },
-  Button: {
-    backgroundColor: 'lightgreen',
-    borderColor: 'darkgreen',
-    borderWidth: 2,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-  },
-  ButtonText: {
-    color: 'darkgreen',
-    fontWeight: 'bold',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
 
+});
 export default PhoneVerification;

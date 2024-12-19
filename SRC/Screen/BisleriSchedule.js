@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   planText: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 40,
     textAlign: 'center',
   },
   planContainer: {

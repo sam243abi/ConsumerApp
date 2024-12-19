@@ -9,6 +9,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  Dimensions
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -51,6 +52,7 @@ const HomeScreen = ({ navigation }) => {
       screen: "TenderCoconutScreen",
     },
   ];
+  const { width } = Dimensions.get('window');
 
   const otherServices = [
     {
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   headerContainer: {
-    padding: 8,
+    padding: 25,
     backgroundColor: "#FFF3E6",
   },
   deliveryText: {

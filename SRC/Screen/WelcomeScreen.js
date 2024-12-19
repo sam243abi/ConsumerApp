@@ -6,7 +6,7 @@ const WelcomeScreen = () => {
   const navigation = useNavigation();
 
   const handleScreenPress = () => {
-    navigation.navigate('Phone Number Verification');
+    navigation.navigate('Intro');
   };
 
   return (

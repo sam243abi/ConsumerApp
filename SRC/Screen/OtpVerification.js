@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView,
-  Keyboard,
-  Animated,
-  Platform,
-} from 'react-native';
+import {View,Text,StyleSheet,TextInput,TouchableOpacity,KeyboardAvoidingView,ScrollView,Keyboard,Animated,Platform,} from 'react-native';
+import { globalStyles } from './styles/global';
 
 const OtpVerification = ({ navigation }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -20,6 +10,17 @@ const OtpVerification = ({ navigation }) => {
   const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer > 0) {
+          return prevTimer - 1;
+        } else {
+          clearInterval(interval);
+          return 0;
+        }
+      });
+    }, 100);
+
     const handleKeyboardWillShow = (event) => {
       Animated.timing(translateY, {
         toValue: -event.endCoordinates.height / 1.5,
@@ -40,15 +41,16 @@ const OtpVerification = ({ navigation }) => {
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
       handleKeyboardWillShow
     );
+
     const keyboardHideListener = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
       handleKeyboardWillHide
     );
-
     return () => {
       keyboardShowListener.remove();
       keyboardHideListener.remove();
     };
+
   }, []);
 
   const handleOtpChange = (index, value) => {
@@ -119,8 +121,8 @@ const OtpVerification = ({ navigation }) => {
             <Text style={{ color: timer > 0 ? 'gray' : 'blue' }}>SEND AGAIN</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.Button} onPress={handleCompleteProfile}>
-            <Text style={styles.ButtonText}>Complete Profile</Text>
+          <TouchableOpacity style={globalStyles.SignButton} onPress={handleCompleteProfile}>
+            <Text style={globalStyles.SignButtonT}>Complete Profile</Text>
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
@@ -146,18 +148,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10, // Reduced margin for tighter placement
+    marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 15,
-    marginBottom: 30, // Adjusted for better spacing below the title
+    marginBottom: 30,
     textAlign: 'center',
   },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 40, // More spacing below OTP inputs
+    marginBottom: 40,
   },
   otpInput: {
     borderWidth: 1,
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     height: 50,
     textAlign: 'center',
     fontSize: 18,
-    marginHorizontal: 8, // Consistent spacing between input boxes
+    marginHorizontal: 8,
   },
   inputError: {
     borderColor: 'red',
@@ -175,29 +177,16 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 12,
-    marginBottom: 20, // Added spacing below error text
+    marginBottom: 20, 
   },
   timerText: {
     fontSize: 16,
     marginBottom: 20,
   },
   resendButton: {
-    marginBottom: 30, // Added spacing below resend button
+    marginBottom: 30,
   },
-  Button: {
-    backgroundColor: 'lightgreen',
-    borderColor: 'darkgreen',
-    borderWidth: 2,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-  },
-  ButtonText: {
-    color: 'darkgreen',
-    fontWeight: 'bold',
-    fontSize: 16,
-    textAlign: 'center',
-  },
+
 });
 
 export default OtpVerification;

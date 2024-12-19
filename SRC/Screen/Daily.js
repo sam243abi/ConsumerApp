@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment'; 
 import { Alert } from 'react-native';
+import { globalStyles } from './styles/global';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const DailyPage = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -59,10 +61,7 @@ const DailyPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.productDetails}>
-        <Text style={styles.productName}>Heritage Special Toned Milk Pouch</Text>
-        <Text>500 ml</Text>
-      </View>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <Text style={styles.sectionTitle}>Select start date</Text>
       <Calendar
         current={selectedDate || today} 
@@ -91,8 +90,9 @@ const DailyPage = ({ navigation }) => {
           </View>
         </View>
       )}
-      <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-        <Text style={styles.confirmButtonText}>Confirm</Text>
+      </ScrollView>
+      <TouchableOpacity style={globalStyles.ScheConfirmButton} onPress={handleConfirm}>
+        <Text style={globalStyles.ScheConfirmButtonText}>Confirm</Text>
       </TouchableOpacity>
     </View>
   );
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 10,
   },
   productDetails: {
     alignItems: 'center',
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
   },
@@ -137,18 +137,6 @@ const styles = StyleSheet.create({
   quantity: {
     fontSize: 18,
     marginHorizontal: 20,
-  },
-  confirmButton: {
-    backgroundColor: '#9dd694',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 30,
-  },
-  confirmButtonText: {
-    color: '#064e3b',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

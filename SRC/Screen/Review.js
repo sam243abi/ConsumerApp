@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Modal,
-  ScrollView,
-} from 'react-native';
+import {View,Text,StyleSheet,TouchableOpacity,TextInput,Modal,ScrollView,Image} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { globalStyles } from './styles/global';
 const ReviewPage = ({ route, navigation }) => {
   const { selectedPlan } = route.params;
 
@@ -46,7 +38,9 @@ const ReviewPage = ({ route, navigation }) => {
   };
 
   return (
+    <View style={{ flex: 1 }}>
     <ScrollView style={styles.container}>
+      <View>
       <Text style={styles.title}>Selected Time Slot</Text>
 
       <View style={styles.buttonContainer}>
@@ -168,12 +162,6 @@ const ReviewPage = ({ route, navigation }) => {
         </View>
       </View>
 
-      <View style={styles.confirmOrderContainer}>
-        <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmOrder}>
-          <Text style={styles.confirmButtonText}>Confirm Order</Text>
-        </TouchableOpacity>
-      </View>
-
       <Modal transparent={true} visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -218,14 +206,17 @@ const ReviewPage = ({ route, navigation }) => {
       <Modal transparent={true} visible={confirmModalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <View style={styles.modalImageContainer}>
-              <Ionicons name="water" size={80} color="#1E88E5" />
-              <View style={styles.modalDetails}>
-                <Text style={styles.modalTextTitle}>25 Litre Can</Text>
-                <Text style={styles.modalText}>2x every Tuesday and Friday</Text>
-                <Text style={styles.modalCost}>Estimated Monthly Cost: ₹450</Text>
-              </View>
+          <View style={styles.modalImageContainer}>
+            <Image
+              source={require('./images/bisleri.png')} 
+              style={styles.imageStyle}
+            />
+            <View style={styles.modalDetails}>
+              <Text style={styles.modalTextTitle}>25 Litre Can</Text>
+              <Text style={styles.modalText}>2x every Tuesday and Friday</Text>
+              <Text style={styles.modalCost}>Estimated Monthly Cost: ₹450</Text>
             </View>
+          </View>
 
             <View style={styles.modalAddressContainer}>
               <Text style={styles.modalAddressLabel}>Delivery Address:</Text>
@@ -249,7 +240,14 @@ const ReviewPage = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
+      </View>
     </ScrollView>
+    <View style={styles.confirmOrderContainer}>
+    <TouchableOpacity style={globalStyles.ScheConfirmButton} onPress={handleConfirmOrder}>
+      <Text style={globalStyles.ScheConfirmButtonText}>Confirm Order</Text>
+    </TouchableOpacity>
+  </View>
+  </View>
   );
 };
 
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
       title: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 30,
       },
       buttonContainer: {
         flexDirection: 'row',
@@ -327,13 +325,16 @@ const styles = StyleSheet.create({
       addLocationText: {
         color: '#064e3b',
         fontSize: 18,
-        marginLeft: 5,
+        marginLeft: 15,
+        marginBottom: 30,
+        top:15
+
       },
       infoBox: {
         borderWidth: 1,
         borderColor: '#1E88E5',
         borderRadius: 5,
-        padding: 10,
+        padding: 15,
         backgroundColor: '#F5FAFF',
         width: '100%',
         flexDirection: 'row',
@@ -344,6 +345,8 @@ const styles = StyleSheet.create({
         color: '#000',
         marginLeft: 5,
         flexShrink: 1,
+        marginTop: 20,
+        marginBottom: 20,
       },
       
       modalContainer: {
@@ -436,14 +439,46 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#555',
       },
-      modalImageContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
-      modalDetails: { marginLeft: 15 },
-      modalTextTitle: { fontSize: 18, fontWeight: 'bold', color: '#000' },
-      modalText: { fontSize: 16, color: '#555' },
-      modalCost: { fontSize: 16, color: '#388E3C', fontWeight: 'bold', marginTop: 5 },
-      modalAddressContainer: { marginVertical: 10 },
-      modalAddressLabel: { fontSize: 16, fontWeight: 'bold', color: '#000' },
-      modalAddressText: { fontSize: 16, color: '#555' },
+      modalImageContainer: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        marginBottom: 20 
+      },
+      modalDetails: { 
+        marginLeft: 15 
+      },
+      modalTextTitle: { 
+        fontSize: 18, 
+        fontWeight: 'bold', 
+        color: '#000' 
+      },
+      modalText: { 
+        fontSize: 16, 
+        color: '#555' 
+      },
+      modalCost: {
+        fontSize: 16, 
+        color: '#388E3C', 
+        fontWeight: 'bold', 
+        marginTop: 5 
+      },
+      modalAddressContainer: { 
+        marginVertical: 10 
+      },
+      modalAddressLabel: { 
+        fontSize: 16, 
+        fontWeight: 'bold', 
+        color: '#000' 
+      },
+      modalAddressText: { 
+        fontSize: 16, 
+        color: '#555' 
+      },
+      imageStyle: {
+        width: 80,  
+        height: 80, 
+        resizeMode: 'contain', 
+      },
 });
 
 export default ReviewPage;

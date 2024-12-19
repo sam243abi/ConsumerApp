@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Swiper from 'react-native-swiper';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width } = Dimensions.get('window');
 
 const ProductScreen = ({ navigation }) => {
-  const [starRating, setStarRating] = useState(0);
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
   const [isShelfLifeCollapsed, setIsShelfLifeCollapsed] = useState(true);
   const [isCertification, setIsCertification] = useState(true);
-  const [isReview, setIsReview] = useState(true);
 
   const goToVendorDetails = () => {
-    navigation.navigate('VendorDS'); // Navigate to VendorDetails page
+    navigation.navigate('VendorDS');
   };
 
   const onSubmit = () => {
@@ -23,7 +20,6 @@ const ProductScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Vendor Details Card */}
       <TouchableOpacity style={styles.vendorCard} onPress={goToVendorDetails}>
         <View style={styles.vendorDetailsContainer}>
           <View style={styles.iconContainer}>
@@ -37,12 +33,11 @@ const ProductScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
 
-      {/* Slideshow */}
       <View style={styles.swiperContainer}>
         <Swiper
           showsButtons={true}
           autoplay={true}
-          autoplayTimeout={3}
+          autoplayTimeout={5}
           style={styles.wrapper}
           prevButton={<Text style={styles.arrowText}>‹</Text>}
           nextButton={<Text style={styles.arrowText}>›</Text>}
@@ -55,8 +50,7 @@ const ProductScreen = ({ navigation }) => {
         </Swiper>
       </View>
 
-      {/* Content */}
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={styles.productInfo}>
           <Text style={styles.productName}>Bisleri Water Can </Text>
           <Text style={styles.productQuantity}>25 L</Text>
@@ -64,7 +58,6 @@ const ProductScreen = ({ navigation }) => {
           <Text style={styles.subscribeText}>Subscribe now!</Text>
         </View>
 
-        {/* Product Description */}
         <TouchableOpacity onPress={() => setIsDescriptionCollapsed(!isDescriptionCollapsed)} style={styles.toggleButton}>
           <Text style={styles.toggleButtonText}>Product Description</Text>
         </TouchableOpacity>
@@ -75,7 +68,6 @@ const ProductScreen = ({ navigation }) => {
           </Text>
         </Collapsible>
 
-        {/* Shelf Life */}
         <TouchableOpacity onPress={() => setIsShelfLifeCollapsed(!isShelfLifeCollapsed)} style={styles.toggleButton}>
           <Text style={styles.toggleButtonText}>Shelf Life</Text>
         </TouchableOpacity>
@@ -83,7 +75,6 @@ const ProductScreen = ({ navigation }) => {
           <Text style={styles.descriptionText}>The shelf life of the Water Can is 45 days.</Text>
         </Collapsible>
 
-        {/* Certifications */}
         <TouchableOpacity onPress={() => setIsCertification(!isCertification)} style={styles.toggleButton}>
           <Text style={styles.toggleButtonText}>Certifications</Text>
         </TouchableOpacity>
@@ -91,22 +82,6 @@ const ProductScreen = ({ navigation }) => {
           <Text style={styles.descriptionText}>This product is certified by FSSAI.</Text>
         </Collapsible>
 
-        {/* Reviews */}
-        <TouchableOpacity onPress={() => setIsReview(!isReview)} style={styles.toggleButton}>
-          <Text style={styles.reviewText}>Review</Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={isReview}>
-          <View style={styles.starContainer}>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <TouchableOpacity key={star} onPress={() => setStarRating(star)} style={styles.starTouchable}>
-                <Icon name="star" size={30} color={star <= starRating ? '#FFD700' : '#D3D3D3'} />
-              </TouchableOpacity>
-            ))}
-            <Text style={styles.selectedRating}>{starRating}</Text>
-          </View>
-        </Collapsible>
-
-        {/* Other Products Section */}
         <View style={styles.otherProductsSection}>
           <Text style={styles.otherProductsTitle}>Other Products</Text>
           <View style={styles.otherProductsContainer}>
@@ -121,8 +96,7 @@ const ProductScreen = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-
-      {/* Subscribe Button */}
+      
       <TouchableOpacity style={styles.subscribeButton} onPress={onSubmit}>
         <Text style={styles.subscribeButtonText}>Subscribe Now</Text>
       </TouchableOpacity>
@@ -232,19 +206,17 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   subscribeButton: {
+    position: 'absolute', 
+    bottom: 0,            
+    left: 0,              
+    right: 0,             
+    alignItems: 'center', 
     backgroundColor: '#9dd694',
-    paddingVertical: 20,
-    paddingHorizontal: 160,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-    marginVertical: 20,
-    alignSelf: 'center',
-    elevation: 2,
+    paddingVertical: 25, 
   },
   subscribeButtonText: {
-    fontSize: 16,
     color: '#064e3b',
+    fontSize: 16,
     fontWeight: 'bold',
   },
   arrowText: {
@@ -300,9 +272,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  reviewText:{
-    fontWeight: 'bold',
   },
 });
 

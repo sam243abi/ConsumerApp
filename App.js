@@ -29,7 +29,7 @@ import Review from './SRC/Screen/Review'
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeScreen">
+      <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Phone Number Verification" component={PhoneVerification} />
         <Stack.Screen name="OTP Verify" component={OtpVerification} />

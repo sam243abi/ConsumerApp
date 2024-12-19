@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Keyboard,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  ScrollView,
-} from 'react-native';
+import {View,Text,Keyboard,StyleSheet,TextInput,TouchableOpacity,KeyboardAvoidingView,Platform,TouchableWithoutFeedback,ScrollView,} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
+import {globalStyles} from '../Screen/styles/global'
 
 const sampleLocations = [
   {
@@ -87,7 +77,7 @@ const DeliveryAddress = () => {
   };
 
   const onSubmit = () => {
-    navigation.navigate('Intro');
+    navigation.navigate('HomeScreen');
   };
 
   return (
@@ -133,13 +123,12 @@ const DeliveryAddress = () => {
               setAddress((prev) => ({ ...prev, postalCode: text }))
             }
           />
-
+          </ScrollView>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={onSubmit}>
-              <Text style={styles.buttonText}>Find Location</Text>
+            <TouchableOpacity style={globalStyles.SignButton} onPress={onSubmit}>
+              <Text style={globalStyles.SignButtonT}>Next</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
@@ -183,8 +172,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonContainer: {
-    width: '100%',
+    position: 'absolute',
+    bottom: 200,
+    left: 0,
+    right: 0,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     backgroundColor: 'lightgreen',

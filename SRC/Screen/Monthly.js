@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, ScrollView, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
+import { globalStyles } from './styles/global';
 
 const MonthlyPage = ({ navigation }) => {
   const [selectedDates, setSelectedDates] = useState({});
@@ -18,7 +19,7 @@ const MonthlyPage = ({ navigation }) => {
         delete newDates[date];
         delete quantities[date];
       } else {
-        newDates[date] = { selected: true, selectedColor: '#9dd694' }; // Dot fills entire date area
+        newDates[date] = { selected: true, selectedColor: '#9dd694' };
         quantities[date] = 1;
       }
       return newDates;
@@ -52,8 +53,12 @@ const MonthlyPage = ({ navigation }) => {
   const generateMarkedDates = () => selectedDates;
 
   return (
-    <ScrollView style={styles.container} nestedScrollEnabled={true}>
-      <Text style={styles.header}>Select date(s) for monthly delivery</Text>
+    <View style={{ flex: 1 }}>
+      
+  <ScrollView style={styles.container} nestedScrollEnabled={true} contentContainerStyle={{ paddingBottom: 100 }}>
+   
+    <View>
+    <Text style={styles.header}>Select date(s) for monthly delivery</Text>
 
       <Calendar
         onDayPress={handleDayPress}
@@ -65,7 +70,7 @@ const MonthlyPage = ({ navigation }) => {
         hideDayNames={true}
         hideExtraDays={true}
         theme={{
-          selectedDayBackgroundColor: '#9dd694', // Dot fills the date area
+          selectedDayBackgroundColor: '#9dd694',
           todayTextColor: '#064e3b',
           arrowColor: '#9dd694',
         }}
@@ -100,11 +105,14 @@ const MonthlyPage = ({ navigation }) => {
           />
         </View>
       )}
+      </View>
+      </ScrollView>
 
-      <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-        <Text style={styles.confirmButtonText}>Confirm</Text>
+      <TouchableOpacity style={globalStyles.ScheConfirmButton} onPress={handleConfirm}>
+        <Text style={globalStyles.ScheConfirmButtonText}>Confirm</Text>
       </TouchableOpacity>
-    </ScrollView>
+      </View>
+    
   );
 };
 
@@ -154,18 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: 20,
   },
-  confirmButton: {
-    backgroundColor: '#9dd694',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 30,
-  },
-  confirmButtonText: {
-    color: '#064e3b',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+
 });
 
 export default MonthlyPage;

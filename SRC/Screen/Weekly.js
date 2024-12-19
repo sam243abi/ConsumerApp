@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { Ionicons } from '@expo/vector-icons';
+import { globalStyles } from './styles/global';
 
 const Weekly = ({ navigation }) => {
   const [selectedDays, setSelectedDays] = useState([]);  
@@ -99,7 +99,8 @@ const Weekly = ({ navigation }) => {
   );
 
   return (
-    <ScrollView style={styles.container}>
+  <View style={{ flex: 1 }}> 
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <Text style={styles.header}>Select day(s) for Delivery</Text>
       <View style={styles.daysContainer}>{days.map(renderDayButton)}</View>
 
@@ -111,27 +112,33 @@ const Weekly = ({ navigation }) => {
       )}
 
       <Text style={styles.header}>Select start date</Text>
-      <Calendar
-        onDayPress={handleStartDateSelect}
-        markedDates={{
-          ...disablePastDates(),
-          [startDate]: { selected: true, selectedColor: '#004AAD', selectedTextColor: 'white' },
-          ...calculateNextDeliveryDays(startDate), 
-        }}
-        theme={{
-          selectedDayBackgroundColor: '#004AAD',
-          selectedDayTextColor: 'white',
-          dotColor: '#064e3b',
-          todayTextColor: '#064e3b',
-          arrowColor: '#9dd694',
-        }}
-      />
-
-      <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('Review', { selectedPlan: 'Weekly' })}>
-        <Text style={styles.confirmButtonText}>Confirm</Text>
-      </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <Calendar
+          onDayPress={handleStartDateSelect}
+          markedDates={{
+            ...disablePastDates(),
+            [startDate]: { selected: true, selectedColor: '#004AAD', selectedTextColor: 'white' },
+            ...calculateNextDeliveryDays(startDate), 
+          }}
+          theme={{
+            selectedDayBackgroundColor: '#004AAD',
+            selectedDayTextColor: 'white',
+            dotColor: '#064e3b',
+            todayTextColor: '#064e3b',
+            arrowColor: '#9dd694',
+          }}
+        />
+      </View>
     </ScrollView>
-  );
+    <TouchableOpacity
+      style={globalStyles.ScheConfirmButton}
+      onPress={() => navigation.navigate('Review', { selectedPlan: 'Weekly' })}
+    >
+      <Text style={globalStyles.ScheConfirmButtonText}>Confirm</Text>
+    </TouchableOpacity>
+  </View>
+);
+
 };
 
 const styles = StyleSheet.create({
@@ -192,18 +199,7 @@ const styles = StyleSheet.create({
     fontSize: 16, 
     marginHorizontal: 10 
   },
-  confirmButton: { 
-    backgroundColor: '#9dd694', 
-    padding: 15, 
-    borderRadius: 10, 
-    alignItems: 'center', 
-    marginTop: 30 
-  },
-  confirmButtonText: { 
-    color: '#064e3b', 
-    fontSize: 16, 
-    fontWeight: 'bold' 
-  },
+
 });
 
 export default Weekly;

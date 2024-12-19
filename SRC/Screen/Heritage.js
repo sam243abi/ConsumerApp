@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Swiper from 'react-native-swiper';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width } = Dimensions.get('window');
 
@@ -11,7 +10,6 @@ const ProductScreen = ({ navigation }) => {
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
   const [isShelfLifeCollapsed, setIsShelfLifeCollapsed] = useState(true);
   const [isCertification, setIsCertification] = useState(true);
-  const [isReview, setIsReview] = useState(true);
 
   const goToVendorDetails = () => {
     navigation.navigate('VendorDS'); // Navigate to VendorDetails page
@@ -56,7 +54,6 @@ const ProductScreen = ({ navigation }) => {
           <Image source={require('./images/mai.jpeg')} style={styles.slideImage} />
           <Image source={require('./images/fssai.jpeg')} style={styles.slideImage} />
           <Image source={require('./images/bar.jpeg')} style={styles.slideImage} />
-
         </Swiper>
       </View>
 
@@ -104,21 +101,6 @@ const ProductScreen = ({ navigation }) => {
           <Text style={styles.descriptionText}>
             This product is certified by FSSAI.
           </Text>
-        </Collapsible>
-
-        {/* Reviews */}
-        <TouchableOpacity onPress={() => setIsReview(!isReview)} style={styles.toggleButton}>
-          <Text style={styles.reviewText}>Review</Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={isReview}>
-          <View style={styles.starContainer}>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <TouchableOpacity key={star} onPress={() => setStarRating(star)} style={styles.starTouchable}>
-                <Icon name="star" size={30} color={star <= starRating ? '#FFD700' : '#D3D3D3'} />
-              </TouchableOpacity>
-            ))}
-            <Text style={styles.selectedRating}>{starRating}</Text>
-          </View>
         </Collapsible>
 
         {/* Other Products Section */}
@@ -315,9 +297,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  reviewText:{
-    fontWeight: 'bold',
   },
 });
 

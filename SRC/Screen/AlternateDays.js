@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
+import { globalStyles } from './styles/global';
 
 const AlternateDays = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -60,8 +61,8 @@ const AlternateDays = ({ navigation }) => {
           </View>
         </View>
       )}
-      <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('Review', { selectedPlan: 'AlternateDays' })}>
-        <Text style={styles.confirmButtonText}>Confirm</Text>
+      <TouchableOpacity style={globalStyles.ScheConfirmButton} onPress={() => navigation.navigate('Review', { selectedPlan: 'AlternateDays' })}>
+        <Text style={globalStyles.ScheConfirmButtonText}>Confirm</Text>
       </TouchableOpacity>
     </View>
   );

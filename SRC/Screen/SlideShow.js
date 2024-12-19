@@ -46,7 +46,7 @@ const SlideShow = () => {
       flatListRef.current.scrollToIndex({ index: nextIndex });
       setCurrentIndex(nextIndex);
     } else {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('Phone Number Verification');
     }
   };
 
@@ -102,7 +102,6 @@ const SlideShow = () => {
         keyExtractor={(item) => item.id}
         horizontal
         pagingEnabled
-        showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={handleScrollEnd}
       />
     </View>
