@@ -32,4 +32,19 @@ export const globalStyles = StyleSheet.create({
     fontWeight: 'bold',
 
     },
+    subscribeButton: {
+        alignSelf: "flex-end",
+        paddingVertical: 8,
+        paddingHorizontal: 8,
+        backgroundColor: "#d1fae5",
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: "#22d3ee",
+      },
+      subscribeButtonText: {
+        color: "#064e3b",
+        textAlign: "center",
+        fontSize: 14,
+        fontWeight: "600",
+      },
 });

@@ -1,19 +1,67 @@
-import React, { useState } from "react";
-import {View,Text,StyleSheet,TouchableOpacity,Image,FlatList,} from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  ScrollView,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import BottomNav from "./components/BottomNav";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import moment from "moment";
 
 const DropsScreen = () => {
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState("Delivered"); 
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date()); 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [calendarDates, setCalendarDates] = useState([]);
+  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
 
-  const pressSearch = () => {
-    navigation.navigate("SearchScreen");
+  useEffect(() => {
+    const generateCalendarDates = () => {
+      const today = new Date();
+      const rangeDays = 30; // Number of days to show before and after
+      const calendar = [];
+
+      for (let i = -rangeDays; i <= rangeDays; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        calendar.push(date);
+      }
+      setCalendarDates(calendar);
+    };
+
+    const loadSelectedDate = async () => {
+      try {
+        const storedDate = await AsyncStorage.getItem("selectedDate");
+        if (storedDate) {
+          setSelectedDate(new Date(storedDate));
+        }
+      } catch (error) {
+        console.error("Error loading selected date:", error);
+      }
+    };
+
+    generateCalendarDates();
+    loadSelectedDate();
+  }, []);
+
+  const handleDateChange = async (date) => {
+    try {
+      await AsyncStorage.setItem("selectedDate", date.toISOString());
+      setSelectedDate(date);
+    } catch (error) {
+      console.error("Error saving selected date:", error);
+    }
   };
+
+  const handleConfirmDate = (date) => {
+    handleDateChange(date);
+    setDatePickerVisible(false);
+  };
+
   const products = [
     {
       id: 1,
@@ -40,12 +88,7 @@ const DropsScreen = () => {
       image: require("./images/aquafina.png"),
     },
   ];
-  const deliveredProducts = products.filter(
-    (product) => product.status === "Delivered"
-  );
-  const scheduledProducts = products.filter(
-    (product) => product.status === "Scheduled"
-  );
+
   const renderProductItem = ({ item }) => (
     <View style={styles.productItem}>
       <Image source={item.image} style={styles.productImage} />
@@ -53,103 +96,101 @@ const DropsScreen = () => {
         <Text style={styles.productName}>{item.name}</Text>
         <Text style={styles.productQuantity}>{item.quantity}</Text>
         <Text style={styles.deliveryTime}>{item.deliveryTime}</Text>
-        <Text
-          style={[
-            styles.status,
-            item.status === "Delivered" ? styles.delivered : styles.scheduled,
-          ]}
-        >
-          {item.status}
-        </Text>
+        <View>
+          <Text
+            style={[
+              styles.statusText,
+              item.status === "Delivered"
+                ? styles.deliveredText
+                : styles.scheduledText,
+            ]}
+          >
+            {item.status}
+          </Text>
+        </View>
       </View>
       <TouchableOpacity style={styles.manageButton}>
         <Text style={styles.manageButtonText}>Manage</Text>
       </TouchableOpacity>
     </View>
   );
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-  const handleConfirm = (date) => {
-    setSelectedDate(date);
-    hideDatePicker();
-  };
+
+  const renderCalendar = () => (
+    <View>
+      {/* Horizontally Scrollable Dates with Proper Alignment */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.datesScrollView}
+      >
+        {calendarDates.map((date, index) => {
+          const isSelectedDate =
+            selectedDate.toDateString() === date.toDateString();
+
+          return (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.calendarItem,
+                isSelectedDate && styles.selectedCalendarItem,
+              ]}
+              onPress={() => handleDateChange(date)}
+            >
+              <Text
+                style={[
+                  styles.calendarDay,
+                  isSelectedDate && styles.selectedText,
+                ]}
+              >
+                {date.toLocaleString("default", { weekday: "short" })}
+              </Text>
+              <Text
+                style={[
+                  styles.calendarDate,
+                  isSelectedDate && styles.selectedText,
+                ]}
+              >
+                {date.getDate()}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Drops</Text>
-        <TouchableOpacity onPress={showDatePicker} style={styles.calendarIcon}>
-          <Icon name="calendar" size={24} color="#555" />
+        <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+          <Text style={styles.headerTitle}>
+            {`${selectedDate.getDate()} ${selectedDate.toLocaleString(
+              "default",
+              { month: "long" }
+            )}`}
+          </Text>
         </TouchableOpacity>
       </View>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-        maximumDate={new Date(2025, 12, 31)}
-        minimumDate={new Date(2023, 0, 1)}
-      />
-      <View style={styles.tabs}>
-        <TouchableOpacity
-          style={[
-            styles.tabButton,
-            selectedTab === "Delivered" && styles.activeTab,
-          ]}
-          onPress={() => setSelectedTab("Delivered")}
-        >
-          <Text style={styles.tabButtonText}>Delivered</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.tabButton,
-            selectedTab === "Scheduled" && styles.activeTab,
-          ]}
-          onPress={() => setSelectedTab("Scheduled")}
-        >
-          <Text style={styles.tabButtonText}>Scheduled</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ height: 20 }} />
+
+      {renderCalendar()}
+
       <FlatList
-        data={
-          selectedTab === "Delivered" ? deliveredProducts : scheduledProducts
-        }
+        data={products}
         renderItem={renderProductItem}
         keyExtractor={(item) => item.id.toString()}
         style={styles.productList}
       />
-      <View style={styles.bottomNav}>
-        <TouchableOpacity
-          style={styles.navItem}
-          onPress={() => navigation.navigate("HomeScreen")}
-        >
-          <Icon name="home" size={24} color="#555" />
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={pressSearch}>
-          <Icon name="search" size={24} color="#555" />
-          <Text style={styles.navText}>Search</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navItem}
-          onPress={() => navigation.navigate("DropScreen")}
-        >
-          <Icon name="dropbox" size={24} color="#555" />
-          <Text style={styles.navText}>Drops</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navItem}
-          onPress={() => navigation.navigate("AccountScreen")}
-        >
-          <Icon name="user" size={24} color="#555" />
-          <Text style={styles.navText}>Account</Text>
-        </TouchableOpacity>
-      </View>
+
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        date={selectedDate}
+        onConfirm={handleConfirmDate}
+        onCancel={() => setDatePickerVisible(false)}
+      />
+
+      {/* Bottom navigation bar */}
+      <BottomNav navigation={navigation} activeTab="Drops" />
     </View>
   );
 };
@@ -157,62 +198,69 @@ const DropsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#ffffff",
     padding: 10,
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    marginBottom: 16,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: "bold",
   },
-  calendarIcon: {
-    padding: 10,
-  },
-  tabs: {
+  datesScrollView: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 10,
   },
-  tabButton: {
-    flex: 1,
-    paddingVertical: 10,
+  calendarItem: {
     alignItems: "center",
-    backgroundColor: "#94a3b8",
-    borderRadius: 10,
-    marginHorizontal: 5,
+    justifyContent: "center",
+    marginHorizontal: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 8,
   },
-  activeTab: {
+  selectedCalendarItem: {
     backgroundColor: "#064e3b",
   },
-  tabButtonText: {
+  calendarDay: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  calendarDate: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#000",
+  },
+  selectedText: {
+    color: "#ffffff",
   },
   productList: {
     flex: 1,
   },
   productItem: {
     flexDirection: "row",
-    backgroundColor: "#fff",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
     alignItems: "center",
+    backgroundColor: "#ffffff",
+    padding: 10,
+    marginBottom: 16,
+    borderRadius: 10,
+    borderColor: "#9dd694",
+    borderWidth: 1,
   },
   productImage: {
-    width: 80,
-    height: 80,
-    marginRight: 15,
+    width: 90,
+    height: 90,
+    resizeMode: "contain",
+    marginRight: 12,
+    marginLeft: -20,
   },
   productDetails: {
     flex: 1,
+    position: "relative",
   },
   productName: {
     fontSize: 16,
@@ -225,49 +273,32 @@ const styles = StyleSheet.create({
     color: "#999",
     marginBottom: 5,
   },
-  status: {
+  statusText: {
     fontSize: 12,
     fontWeight: "bold",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
   },
-  delivered: {
-    backgroundColor: "#dcfce7",
+  deliveredText: {
     color: "#14532d",
-    width: 98,
+    fontSize: 14,
   },
-  scheduled: {
-    backgroundColor: "#e0f2fe",
+  scheduledText: {
     color: "#164e63",
-    width: 97,
+    fontSize: 14,
   },
   manageButton: {
+    alignSelf: "flex-end",
     backgroundColor: "#9dd694",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 11,
+    borderColor: "#9dd694",
+    borderWidth: 2,
   },
   manageButtonText: {
-    color: "#155b44",
+    color: "#064e3b",
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
-  bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 30,
-    backgroundColor: "#FFF",
-    borderTopColor: "#EEE",
-    borderTopWidth: 1,
-  },
-  
-  navItem: { alignItems: "center" },
-  navText: { fontSize: 14, color: "#555", marginTop: 5 },
 });
 
 export default DropsScreen;
