@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Alert } from 'react-native';
 import { globalStyles } from './styles/global';
 import { ScrollView } from 'react-native-gesture-handler';
+import colors from './components/colors';
 
 const DailyPage = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -101,7 +102,7 @@ const DailyPage = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     padding: 10,
   },
   productDetails: {
@@ -126,13 +127,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   quantityButton: {
-    backgroundColor: '#9dd694',
+    backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 10,
   },
   quantityButtonText: {
     fontSize: 18,
-    color: '#064e3b',
   },
   quantity: {
     fontSize: 18,

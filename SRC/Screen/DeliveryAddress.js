@@ -3,6 +3,8 @@ import {View,Text,Keyboard,StyleSheet,TextInput,TouchableOpacity,KeyboardAvoidin
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import {globalStyles} from '../Screen/styles/global'
+import { navigateTo } from './RoutHub/Routs';
+import colors from './components/colors';
 
 const sampleLocations = [
   {
@@ -77,7 +79,7 @@ const DeliveryAddress = () => {
   };
 
   const onSubmit = () => {
-    navigation.navigate('HomeScreen');
+    navigateTo(navigation,'Home');
   };
 
   return (
@@ -137,7 +139,7 @@ const DeliveryAddress = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   content: {
     flexGrow: 1,
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: colors.border,
     borderWidth: 1,
     marginBottom: 20,
     width: '100%',
@@ -178,20 +180,6 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: 'lightgreen',
-    borderColor: 'darkgreen',
-    borderWidth: 2,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: '#333',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

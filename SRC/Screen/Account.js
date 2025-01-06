@@ -8,11 +8,12 @@ import {
   ScrollView,
 } from "react-native";
 import BottomNav from "./components/BottomNav";
+import { navigateTo } from "./RoutHub/Routs";
 
 const profileImage = "https://via.placeholder.com/100";
 const settingsIcon = "https://cdn-icons-png.flaticon.com/512/3524/3524659.png"; // New settings icon
 
-const AccountScreen = ({ navigation }) => {
+const Account = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -101,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccountScreen;
+export default Account;

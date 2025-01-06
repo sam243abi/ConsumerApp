@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Menu, Provider } from "react-native-paper";
+import { navigateTo } from "./RoutHub/Routs";
 
 const SubscriptionStartScreen = () => {
   const navigation = useNavigation();
@@ -12,12 +13,12 @@ const SubscriptionStartScreen = () => {
   const closeMenu = () => setMenuVisible(false);
 
   const handleGoHome = () => {
-    navigation.navigate("HomeScreen");
+    navigation.navigate("Home");
   };
 
   const handleVendorDetails = () => {
     closeMenu();
-    navigation.navigate("VendorDetailsScreen");
+    navigateTo(navigation,  "VendorDetails");
   };
 
   return (

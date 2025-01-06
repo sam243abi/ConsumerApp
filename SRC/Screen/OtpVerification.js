@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {View,Text,StyleSheet,TextInput,TouchableOpacity,KeyboardAvoidingView,ScrollView,Keyboard,Animated,Platform,} from 'react-native';
 import { globalStyles } from './styles/global';
+import {navigateTo } from './RoutHub/Routs'
+import colors from './components/colors';
 
-const OtpVerification = ({ navigation }) => {
-  const [otp, setOtp] = useState(['', '', '', '']);
+const OTP = ({ navigation }) => {
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [error, setError] = useState(false);
   const inputRefs = useRef([]);
@@ -24,7 +26,7 @@ const OtpVerification = ({ navigation }) => {
     const handleKeyboardWillShow = (event) => {
       Animated.timing(translateY, {
         toValue: -event.endCoordinates.height / 1.5,
-        duration: Platform.OS === 'ios' ? event.duration : 300,
+        duration: Platform.OS === "ios" ? event.duration : 300,
         useNativeDriver: true,
       }).start();
     };
@@ -38,28 +40,27 @@ const OtpVerification = ({ navigation }) => {
     };
 
     const keyboardShowListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
       handleKeyboardWillShow
     );
 
     const keyboardHideListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
       handleKeyboardWillHide
     );
     return () => {
       keyboardShowListener.remove();
       keyboardHideListener.remove();
     };
-
   }, []);
 
   const handleOtpChange = (index, value) => {
-    if (/^[0-9]$/.test(value) || value === '') {
+    if (/^[0-9]$/.test(value) || value === "") {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
       setError(false);
-      if (value !== '' && index < otp.length - 1) {
+      if (value !== "" && index < otp.length - 1) {
         inputRefs.current[index + 1].focus();
       }
     }
@@ -67,24 +68,28 @@ const OtpVerification = ({ navigation }) => {
 
   const handleResendOtp = () => {
     setTimer(60);
-    alert('OTP has been resent!');
+    alert("OTP has been resent!");
   };
 
   const handleCompleteProfile = () => {
-    if (otp.some((digit) => digit === '')) {
+    if (otp.some((digit) => digit === "")) {
       setError(true);
     } else {
       setError(false);
-      navigation.navigate('Profile');
+      navigateTo(navigation, 'Profile');
     }
   };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <Animated.View style={[styles.animatedContainer, { transform: [{ translateY }] }]}>
+        <Animated.View
+          style={[styles.animatedContainer, { transform: [{ translateY }] }]}
+        >
           <Text style={styles.title}>Enter OTP to Verify Your Identity</Text>
-          <Text style={styles.subtitle}>Check for the OTP we sent and enter it here:</Text>
+          <Text style={styles.subtitle}>
+            Check for the OTP we sent and enter it here:
+          </Text>
 
           <View style={styles.otpContainer}>
             {otp.map((digit, index) => (
@@ -93,24 +98,32 @@ const OtpVerification = ({ navigation }) => {
                 ref={(el) => (inputRefs.current[index] = el)}
                 style={[
                   styles.otpInput,
-                  error && otp[index] === '' ? styles.inputError : null,
+                  error && otp[index] === "" ? styles.inputError : null,
                 ]}
                 keyboardType="numeric"
                 maxLength={1}
                 value={digit}
                 onChangeText={(value) => handleOtpChange(index, value)}
                 onKeyPress={({ nativeEvent }) => {
-                  if (nativeEvent.key === 'Backspace' && index > 0 && otp[index] === '') {
+                  if (
+                    nativeEvent.key === "Backspace" &&
+                    index > 0 &&
+                    otp[index] === ""
+                  ) {
                     inputRefs.current[index - 1].focus();
                   }
                 }}
               />
             ))}
           </View>
-          {error && <Text style={styles.errorText}>Please fill all OTP fields</Text>}
+          {error && (
+            <Text style={styles.errorText}>Please fill all OTP fields</Text>
+          )}
 
           <Text style={styles.timerText}>
-            {timer > 0 ? `Wait for 00:${timer.toString().padStart(2, '0')}` : '00:00'}
+            {timer > 0
+              ? `Wait for 00:${timer.toString().padStart(2, "0")}`
+              : "00:00"}
           </Text>
 
           <TouchableOpacity
@@ -118,10 +131,15 @@ const OtpVerification = ({ navigation }) => {
             onPress={handleResendOtp}
             disabled={timer > 0}
           >
-            <Text style={{ color: timer > 0 ? 'gray' : 'blue' }}>SEND AGAIN</Text>
+            <Text style={{ color: timer > 0 ? "gray" : "blue" }}>
+              SEND AGAIN
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={globalStyles.SignButton} onPress={handleCompleteProfile}>
+          <TouchableOpacity
+            style={globalStyles.SignButton}
+            onPress={handleCompleteProfile}
+          >
             <Text style={globalStyles.SignButtonT}>Complete Profile</Text>
           </TouchableOpacity>
         </Animated.View>
@@ -133,7 +151,7 @@ const OtpVerification = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   scroll: {
     justifyContent: 'center',
@@ -163,7 +181,7 @@ const styles = StyleSheet.create({
   },
   otpInput: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: colors.border,
     borderRadius: 5,
     width: 50,
     height: 50,
@@ -172,10 +190,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   inputError: {
-    borderColor: 'red',
+    borderColor: colors.error,
   },
   errorText: {
-    color: 'red',
+    color: colors.error,
     fontSize: 12,
     marginBottom: 20, 
   },
@@ -189,4 +207,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default OtpVerification;
+export default OTP;

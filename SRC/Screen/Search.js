@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import BottomNav from "./components/BottomNav";
 import { globalStyles } from "./styles/global";
+import { navigateTo } from "./RoutHub/Routs";
+import colors from "./components/colors";
 
 const ProductCard = ({ title, price, imageUrl, onSubscribe }) => (
   <View style={styles.card}>
@@ -79,12 +81,12 @@ const SearchScreen = ({ navigation }) => {
       imageUrl={item.imageUrl}
       onSubscribe={() => {
         if (item.title === "Bisleri Water Can") {
-          navigation.navigate("WaterCanScreen");
+          navigateTo(navigation,"Bisleri");
         } else if (
           item.title === "Aavin Milk" ||
           item.title === "Arokya Milk"
         ) {
-          navigation.navigate("Heritage");
+          navigateTo(navigation,"Heritage");
         } 
         
       }}
@@ -96,10 +98,10 @@ const SearchScreen = ({ navigation }) => {
       style={styles.iconBox}
       onPress={() => {
         if (item.name === "Water Can") {
-          navigation.navigate("WaterCanScreen");
+          navigateTo(navigation,"WaterCanScreen");
         }
         if (item.name === "Milk") {
-          navigation.navigate("MilkScreen");
+          navigateTo(navigation,"MilkScreen");
         }
       }}
     >
@@ -186,14 +188,14 @@ const SearchScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.background,
   },
   searchBox: {
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: colors.background,
     borderRadius: 10,
     margin: 10,
-    borderColor: "#ddd",
+    borderColor: colors.border,
     borderWidth: 1,
   },
   scrollView: {
@@ -215,13 +217,13 @@ const styles = StyleSheet.create({
   iconBox: {
     marginHorizontal: 8,
     borderWidth: 1,
-    borderColor: "#9dd694",
+    borderColor: colors.primary,
     padding: 15,
     flex: 1,
     alignItems: "center",
     margin: 3,
     padding: 8,
-    backgroundColor: "#FFF",
+    backgroundColor: colors.background,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -238,17 +240,15 @@ const styles = StyleSheet.create({
   iconText: {
     marginTop: 5,
     fontSize: 14,
-    color: "#333",
     fontWeight: "bold",
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
     padding: 17,
     marginBottom: 16,
     borderRadius: 8,
-    borderColor: "#9dd694",
+    borderColor: colors.primary,
     borderWidth: 1,
   },
   image: {
@@ -272,9 +272,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#fff",
     paddingVertical: 3,
-    borderBottomColor: "#ddd",
+    borderBottomColor: colors.border,
     borderBottomWidth: 1,
   },
   tab: {
@@ -283,11 +282,10 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: "#4CAF50",
+    borderBottomColor: colors.primary,
   },
   tabText: {
     fontSize: 16,
-    color: "#555",
     fontWeight: "bold",
   },
 });

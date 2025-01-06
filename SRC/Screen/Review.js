@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {View,Text,StyleSheet,TouchableOpacity,TextInput,Modal,ScrollView,Image} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { globalStyles } from './styles/global';
+import { navigateTo } from './RoutHub/Routs';
 const ReviewPage = ({ route, navigation }) => {
   const { selectedPlan } = route.params;
 
@@ -34,7 +35,7 @@ const ReviewPage = ({ route, navigation }) => {
 
   const handleFinalConfirmation = () => {
     setConfirmModalVisible(false);
-    navigation.navigate('SubscriptionStartScreen');
+    navigateTo(navigation,'SubscriptionStartScreen');
   };
 
   return (
@@ -49,7 +50,7 @@ const ReviewPage = ({ route, navigation }) => {
             styles.button,
             selectedPlan === 'Daily' ? styles.selectedButton : styles.unselectedButton,
           ]}
-          onPress={() => navigation.navigate('Daily')}
+          onPress={() => navigateTo(navigation,'Daily')}
         >
           <Text
             style={[
@@ -68,7 +69,7 @@ const ReviewPage = ({ route, navigation }) => {
               ? styles.selectedButton
               : styles.unselectedButton,
           ]}
-          onPress={() => navigation.navigate('AlternateDays')}
+          onPress={() => navigateTo(navigation,'AlternateDays')}
         >
           <Text
             style={[
@@ -89,7 +90,7 @@ const ReviewPage = ({ route, navigation }) => {
             styles.button,
             selectedPlan === 'Weekly' ? styles.selectedButton : styles.unselectedButton,
           ]}
-          onPress={() => navigation.navigate('Weekly')}
+          onPress={() => navigateTo(navigation,'Weekly')}
         >
           <Text
             style={[
@@ -106,7 +107,7 @@ const ReviewPage = ({ route, navigation }) => {
             styles.button,
             selectedPlan === 'Monthly' ? styles.selectedButton : styles.unselectedButton,
           ]}
-          onPress={() => navigation.navigate('Monthly')}
+          onPress={() => navigateTo(navigation,'Monthly')}
         >
           <Text
             style={[

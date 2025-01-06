@@ -12,8 +12,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import BottomNav from "./components/BottomNav";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { navigateTo } from "./RoutHub/Routs";
+import colors from "./components/colors";
 
-const DropsScreen = () => {
+const Drops = () => {
   const navigation = useNavigation();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [calendarDates, setCalendarDates] = useState([]);
@@ -198,7 +200,7 @@ const DropsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.background,
     padding: 10,
   },
   header: {
@@ -223,20 +225,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   selectedCalendarItem: {
-    backgroundColor: "#064e3b",
+    backgroundColor: colors.primary,
   },
   calendarDay: {
     fontSize: 12,
     fontWeight: "bold",
-    color: "#000",
   },
   calendarDate: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#000",
   },
   selectedText: {
-    color: "#ffffff",
+    color: colors.background,
   },
   productList: {
     flex: 1,
@@ -244,11 +244,10 @@ const styles = StyleSheet.create({
   productItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
     padding: 10,
     marginBottom: 16,
     borderRadius: 10,
-    borderColor: "#9dd694",
+    borderColor: colors.primary,
     borderWidth: 1,
   },
   productImage: {
@@ -267,10 +266,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   productQuantity: {
-    color: "#777",
+    color: colors.border,
   },
   deliveryTime: {
-    color: "#999",
+    color: colors.border,
     marginBottom: 5,
   },
   statusText: {
@@ -278,27 +277,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   deliveredText: {
-    color: "#14532d",
+    color: colors.primary,
     fontSize: 14,
   },
   scheduledText: {
-    color: "#164e63",
     fontSize: 14,
   },
   manageButton: {
     alignSelf: "flex-end",
-    backgroundColor: "#9dd694",
+    backgroundColor: colors.primary,
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 11,
-    borderColor: "#9dd694",
+    borderColor:colors.primary,
     borderWidth: 2,
   },
   manageButtonText: {
-    color: "#064e3b",
     fontSize: 14,
     fontWeight: "600",
   },
 });
 
-export default DropsScreen;
+export default Drops;

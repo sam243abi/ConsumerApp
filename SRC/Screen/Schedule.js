@@ -1,20 +1,19 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { ProductData } from "../../ProductData";
+const Schedule = ({ route, navigation }) => {
+  const { product } = route.params; // Receive product details via navigation
 
-const Schedule = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.productContainer}>
-        <Image
-          style={styles.productImage}
-          source={require('./images/milk.jpeg')}
-        />
+        <Image style={styles.productImage} source={product.image} />
         <View style={styles.productDetails}>
-          <Text style={styles.productTitle}>Heritage Special Toned Milk Pouch</Text>
-          <Text style={styles.productSize}>500 ml</Text>
-          <Text style={styles.productPrice}>₹33</Text>
+          <Text style={styles.productTitle}>{product.title}</Text>
+          <Text style={styles.productSize}>{product.size}</Text>
+          <Text style={styles.productPrice}>{product.price}</Text>
           <Text style={styles.productTax}>(Inclusive of all taxes)</Text>
-          <Text style={styles.subscribeNow}>Subscribe now!</Text>
+          {/* <Text style={styles.subscribeNow}>Subscribe now!</Text> */}
         </View>
       </View>
       <Text style={styles.subscriptionNote}>
@@ -22,16 +21,28 @@ const Schedule = ({navigation}) => {
       </Text>
       <Text style={styles.planText}>Select your plan type</Text>
       <View style={styles.planContainer}>
-        <TouchableOpacity style={styles.planButton} onPress={() => navigation.navigate('Daily')}>
+        <TouchableOpacity
+          style={styles.planButton}
+          onPress={() => navigation.navigate("Daily")}
+        >
           <Text style={styles.planButtonText}>Daily</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.planButton} onPress={() => navigation.navigate('Weekly')}>
+        <TouchableOpacity
+          style={styles.planButton}
+          onPress={() => navigation.navigate("Weekly")}
+        >
           <Text style={styles.planButtonText}>Weekly</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.planButton} onPress={() => navigation.navigate('Monthly')}>
+        <TouchableOpacity
+          style={styles.planButton}
+          onPress={() => navigation.navigate("Monthly")}
+        >
           <Text style={styles.planButtonText}>Monthly</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.planButton} onPress={() => navigation.navigate('AlternateDays')}>
+        <TouchableOpacity
+          style={styles.planButton}
+          onPress={() => navigation.navigate("AlternateDays")}
+        >
           <Text style={styles.planButtonText}>Alternate days</Text>
         </TouchableOpacity>
       </View>
@@ -42,17 +53,13 @@ const Schedule = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
   },
-  backArrow: {
-    fontSize: 24,
-    color: '#000',
-  },
   productContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   productImage: {
     width: 100,
@@ -64,48 +71,48 @@ const styles = StyleSheet.create({
   },
   productTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   productSize: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 5,
   },
   productPrice: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
     marginBottom: 5,
   },
   productTax: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
   },
   subscribeNow: {
     fontSize: 16,
-    color: '#FF8800',
+    color: "#FF8800",
     marginTop: 5,
   },
   subscriptionNote: {
     fontSize: 12,
-    color: '#FF8800',
+    color: "#FF8800",
     marginVertical: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   planText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   planContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   planButton: {
-    backgroundColor: '#9dd694',
+    backgroundColor: "#9dd694",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
   },
   planButtonText: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
   },
 });
 

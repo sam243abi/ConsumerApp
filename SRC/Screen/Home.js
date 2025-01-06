@@ -11,20 +11,23 @@ import {
   Platform,
 } from "react-native";
 import BottomNav from "./components/BottomNav";
+import colors from "./components/colors";
 
-const HomeScreen = ({ navigation }) => {
+const Home = ({ navigation }) => {
   const dailySupplies = [
     {
       id: "1",
       name: "Water Can",
       image: require("./images/water-can.png"),
-      screen: "WaterCanScreen",
+      screen: "Product",
+      type: "watercan",
     },
     {
       id: "2",
       name: "Milk",
       image: require("./images/milk-Bottle.png"),
-      screen: "MilkScreen",
+      screen: "Product",
+      type: "milk", // Updated to match the type from the JSON file
     },
     {
       id: "3",
@@ -49,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
       name: "Tender Coconut",
       image: require("./images/tender-coconut.png"),
       screen: "TenderCoconutScreen",
-    },  
+    },
   ];
 
   const otherServices = [
@@ -75,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <Pressable
-      onPress={() => navigation.navigate(item.screen)}
+      onPress={() => navigation.navigate(item.screen, { type: item.type })} // Pass the type as a parameter
       style={styles.itemContainer}
     >
       <View style={styles.imageWrapper}>
@@ -96,7 +99,8 @@ const HomeScreen = ({ navigation }) => {
         subtitle: "Thirsty for Savings?",
         description: "Subscribe to Fresh Water Today!",
         image: require("./images/aquafina.png"),
-        screen: "bisleri",
+        screen: "Product",
+        type: "watercan", 
       },
       {
         id: "2",
@@ -123,7 +127,7 @@ const HomeScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-      const interval = setInterval(scrollToNext, 3000); // Auto-swipe every 3 seconds
+      const interval = setInterval(scrollToNext, 3000); 
       return () => clearInterval(interval);
     }, [activeIndex]);
 
@@ -158,7 +162,9 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.bannerDescription}>{item.description}</Text>
                 <Pressable
                   style={styles.subscribeButton}
-                  onPress={() => navigation.navigate(item.screen)}
+                  onPress={() =>
+                    navigation.navigate(item.screen, { type: item.type })
+                  }
                 >
                   <Text style={styles.subscribeButtonText}>Subscribe</Text>
                 </Pressable>
@@ -219,7 +225,7 @@ const HomeScreen = ({ navigation }) => {
               <OtherServices />
             </>
           }
-          data={[]} // Empty data since content is in Header and Footer
+          data={[]}
           renderItem={null}
           contentContainerStyle={{ paddingBottom: 120 }}
         />
@@ -234,31 +240,30 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.background,
   },
   headerAndBannerContainer: {
     padding: 10,
-    backgroundColor: "#FFF3E6",
+    backgroundColor: colors.banner,
   },
   deliveryText: {
     fontSize: 14,
-    color: "#888",
+    color: colors.border,
   },
   homeText: {
     fontSize: 14,
     fontWeight: "bold",
-    color: "#333",
     marginBottom: 10,
   },
   bannerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 15, // Adjusted padding
-    borderRadius: 6, // Slightly rounded corners
-    borderWidth: 1, // Added border
-    borderColor: "#9dd694", // Light grey border color
-    backgroundColor: "#ffffff",
-    marginVertical: 5, // Add some spacing between banners
+    padding: 15, 
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: colors.primary, 
+    backgroundColor: colors.background,
+    marginVertical: 5,
   },
   bannerTextContainer: {
     flex: 1,
@@ -267,17 +272,16 @@ const styles = StyleSheet.create({
   bannerTitle: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#2E7D32",
+    color: colors.primary,
     marginBottom: 5,
   },
   bannerSubtitle: {
     fontSize: 16,
-    color: "#555",
     marginBottom: 5,
   },
   bannerDescription: {
     fontSize: 14,
-    color: "#888",
+    color: colors.border,
     marginBottom: 4,
   },
   bannerImage: {
@@ -294,11 +298,11 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#ddd",
+    backgroundColor:colors.border,
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: "#2E7D32",
+    backgroundColor: colors.primary,
   },
   sectionTitle: {
     fontSize: 18,
@@ -312,7 +316,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     margin: 5,
-    backgroundColor: "#FFF",
     borderRadius: 10,
     padding: 10,
     shadowColor: "#000",
@@ -322,7 +325,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     borderWidth: 1,
-    borderColor: "#9dd694",
+    borderColor: colors.primary,
     borderRadius: 10,
     padding: 15,
   },
@@ -334,7 +337,6 @@ const styles = StyleSheet.create({
   itemText: {
     marginTop: 10,
     fontSize: 14,
-    color: "#333",
   },
   bottomNavContainer: {
     position: "absolute",
@@ -344,19 +346,19 @@ const styles = StyleSheet.create({
   subscribeButton: {
     paddingVertical: 8,
     paddingHorizontal: 8,
-    backgroundColor: "#d1fae5",
+    backgroundColor: colors.secondary,
     borderRadius: 8,
-    borderColor: "#22d3ee",
+    borderColor: colors.buttonBor,
     borderWidth: 2,
-    borderColor: "#22d3ee",
+    borderColor: colors.buttonBor,
     alignSelf: "flex-start",
   },
   subscribeButtonText: {
-    color: "#064e3b",
     textAlign: "center",
     fontSize: 14,
     fontWeight: "600",
   },
 });
 
-export default HomeScreen;
+export default Home;
+ 

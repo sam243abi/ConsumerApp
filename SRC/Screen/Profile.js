@@ -3,18 +3,20 @@ import {View,Keyboard,Text,TouchableOpacity,StyleSheet,KeyboardAvoidingView,Scro
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { globalStyles } from './styles/global';
+import { navigateTo } from './RoutHub/Routs';
+import colors from './components/colors';
 
-const ProfileCompletion = ({ navigation }) => {
-  const [dob, setDob] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+const Profile = ({ navigation }) => {
+  const [dob, setDob] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [errorMessages, setErrorMessages] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    dob: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    dob: "",
   });
   const keyboardHeight = useState(new Animated.Value(0))[0];
 
@@ -27,51 +29,54 @@ const ProfileCompletion = ({ navigation }) => {
   };
 
   const handleConfirm = (date) => {
-    const formattedDate = date.toLocaleDateString('en-GB');
+    const formattedDate = date.toLocaleDateString("en-GB");
     setDob(formattedDate);
     hideDatePicker();
   };
 
   const handleDobChange = (input) => {
-    const cleaned = ('' + input).replace(/\D/g, '');
+    const cleaned = ("" + input).replace(/\D/g, "");
     let formatted = cleaned;
     if (cleaned.length > 2) {
       formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
     }
     if (cleaned.length > 4) {
-      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4, 8)}`;
+      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(
+        2,
+        4
+      )}/${cleaned.slice(4, 8)}`;
     }
 
     setDob(formatted);
   };
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  // const validateEmail = (email) => {
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailRegex.test(email);
+  // };
 
   const validateFields = () => {
     const errors = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      dob: '',
-    };
+      firstName: "",
+      lastName: "",
+      email: "",
+      dob: "",
+    }; 
 
     if (!firstName) {
-      errors.firstName = '*Please enter your first name.';
+      errors.firstName = "*Please enter your first name.";
     }
     if (!lastName) {
-      errors.lastName = '*Please enter your last name.';
+      errors.lastName = "*Please enter your last name.";
     }
-    if (!email) {
-      errors.email = '*Please enter your email.';
-    } else if (!validateEmail(email)) {
-      Alert.alert('Invalid Email', 'Provide a valid email ID');
-      errors.email = '*Invalid email format.';
-    }
+    // if (!email) {
+    //   errors.email = '*Please enter your email.';
+    // } else if (!validateEmail(email)) {
+    //   Alert.alert('Invalid Email', 'Provide a valid email ID');
+    //   errors.email = '*Invalid email format.';
+    // }
     if (!dob) {
-      errors.dob = '*Please enter your date of birth.';
+      errors.dob = "*Please enter your date of birth.";
     }
 
     setErrorMessages(errors);
@@ -79,24 +84,32 @@ const ProfileCompletion = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const keyboardShowEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const keyboardHideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const keyboardShowEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const keyboardHideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
 
-    const keyboardDidShowListener = Keyboard.addListener(keyboardShowEvent, (event) => {
-      Animated.timing(keyboardHeight, {
-        duration: Platform.OS === 'ios' ? 250 : 100,
-        toValue: event.endCoordinates.height,
-        useNativeDriver: false,
-      }).start();
-    });
+    const keyboardDidShowListener = Keyboard.addListener(
+      keyboardShowEvent,
+      (event) => {
+        Animated.timing(keyboardHeight, {
+          duration: Platform.OS === "ios" ? 250 : 100,
+          toValue: event.endCoordinates.height,
+          useNativeDriver: false,
+        }).start();
+      }
+    );
 
-    const keyboardDidHideListener = Keyboard.addListener(keyboardHideEvent, () => {
-      Animated.timing(keyboardHeight, {
-        duration: Platform.OS === 'ios' ? 250 : 100,
-        toValue: 0,
-        useNativeDriver: false,
-      }).start();
-    });
+    const keyboardDidHideListener = Keyboard.addListener(
+      keyboardHideEvent,
+      () => {
+        Animated.timing(keyboardHeight, {
+          duration: Platform.OS === "ios" ? 250 : 100,
+          toValue: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    );
 
     return () => {
       keyboardDidHideListener.remove();
@@ -107,15 +120,15 @@ const ProfileCompletion = ({ navigation }) => {
   const translateY = keyboardHeight.interpolate({
     inputRange: [0, 300],
     outputRange: [0, -1],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
   });
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
       >
         <View style={styles.container}>
           <ScrollView
@@ -124,9 +137,10 @@ const ProfileCompletion = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
           >
             <Animated.View style={{ transform: [{ translateY }] }}>
-              <Text style={styles.title}>                      Complete Your Profile</Text>
+              <Text style={styles.title}> Complete Your Profile</Text>
               <Text style={styles.title2}>
-                Fill in the details below so we can tailor our service just for you!
+                Fill in the details below so we can tailor our service just for
+                you!
               </Text>
 
               <View style={styles.inputContainer}>
@@ -205,7 +219,7 @@ const ProfileCompletion = ({ navigation }) => {
               style={globalStyles.SignButton}
               onPress={() => {
                 if (validateFields()) {
-                  navigation.navigate('DeliveryAddress');
+                  navigateTo(navigation,"DeliveryAddress");
                 }
               }}
             >
@@ -227,7 +241,7 @@ const ProfileCompletion = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
   },
   scroll: {
     flexGrow: 1,
@@ -238,13 +252,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 10,
     top: -170,
   },
   title2: {
     fontSize: 14,
-    color: '#666',
+    color: colors.border,
     textAlign: 'center',
     marginBottom: 20,
     paddingHorizontal: 20,
@@ -277,22 +290,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
-    backgroundColor: '#9dd694',
-    borderColor: '#064e3b',
-    borderWidth: 2,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: '#064e3b',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   errorText: {
-    color: 'red',
+    color: colors.error,
     fontSize: 12,
     marginBottom: 10,
     alignSelf: 'flex-start',
@@ -301,4 +300,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileCompletion;
+export default Profile;

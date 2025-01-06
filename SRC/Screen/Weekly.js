@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { globalStyles } from './styles/global';
+import colors from './components/colors';
 
 const Weekly = ({ navigation }) => {
   const [selectedDays, setSelectedDays] = useState([]);  
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     padding: 16, 
-    backgroundColor: 'white' 
+    backgroundColor: colors.background,
   },
   header: { 
     fontSize: 18, 
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0' 
   },
   selectedDayButton: { 
-    backgroundColor: '#9dd694' 
+    backgroundColor: colors.primary 
   },
   dayText: {
     fontSize: 16 
@@ -187,13 +188,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center' 
   },
   quantityButton: { 
-    backgroundColor: '#9dd694', 
+    backgroundColor: colors.primary, 
     padding: 10, 
     borderRadius: 10 
   },
   quantityButtonText: { 
     fontSize: 18, 
-    color: '#064e3b' 
   },
   quantityText: { 
     fontSize: 16, 

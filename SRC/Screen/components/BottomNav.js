@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { navigateTo } from "../RoutHub/Routs";
 
 const BottomNav = ({ navigation, activeTab }) => {
   
@@ -10,7 +11,7 @@ const BottomNav = ({ navigation, activeTab }) => {
       <Pressable
         style={styles.navItem}
         onPress={() => {
-          navigation.navigate("HomeScreen");
+          navigateTo(navigation,"Home");
         }}
       >
         <Icon
@@ -35,7 +36,7 @@ const BottomNav = ({ navigation, activeTab }) => {
       <Pressable
         style={styles.navItem}
         onPress={() => {
-          navigation.navigate("SearchScreen");
+          navigateTo(navigation,"Search");
         }}
       >
         <Icon
@@ -60,7 +61,7 @@ const BottomNav = ({ navigation, activeTab }) => {
       <Pressable
         style={styles.navItem}
         onPress={() => {
-          navigation.navigate("DropScreen");
+          navigateTo(navigation,"Drops");
         }}
       >
         <Icon
@@ -85,7 +86,7 @@ const BottomNav = ({ navigation, activeTab }) => {
       <Pressable
         style={styles.navItem}
         onPress={() => {
-          navigation.navigate("AccountScreen");
+          navigateTo(navigation,"Account");
         }}
       >
         <Icon

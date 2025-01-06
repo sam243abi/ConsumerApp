@@ -1,14 +1,19 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons"; // You need to install react-native-vector-icons or expo icons
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-const VendorDetailsScreen = () => {
-  const navigation = useNavigation();
-
+const VendorDetails = () => {
   const vendor = {
     name: "Swetha Agencies",
     location: "OMR, Kazhipattur",
+    phone: "+919876543210",
     distributorFor:
       "Authorized Distributor For Bisleri, Aquafina, Blue Star Water Cans",
     avatarInitials: "SA",
@@ -17,49 +22,59 @@ const VendorDetailsScreen = () => {
       quantity: "2 x 25ltr can",
       schedule: "Every TUE, FRI, & THU 4:30 - 5:30PM",
       status: "Scheduled",
-      imageUrl: require("./images/bluestar.png"), // Replace with the actual image path
+      imageUrl: require("./images/bluestar.png"),
+    },
+    storeLocation: {
+      latitude: 12.834,
+      longitude: 80.221,
     },
   };
 
   const handleCallVendor = () => {
-    // Logic for calling the vendor can go here
+    const phoneNumber = `tel:${vendor.phone}`;
+    Linking.openURL(phoneNumber).catch((err) =>
+      console.error("Failed to open dialer", err)
+    );
   };
 
   const handleStoreLocation = () => {
-    // Logic for showing store location can go here
+    const { latitude, longitude } = vendor.storeLocation;
+    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    Linking.openURL(url).catch((err) =>
+      console.error("Failed to open Google Maps", err)
+    );
   };
 
   return (
     <View style={styles.container}>
-      {/* Vendor Information */}
-      <View style={styles.vendorInfo}>
+      {/* Vendor Avatar */}
+      <View style={styles.vendorInfoContainer}>
         <View style={styles.avatarContainer}>
           <Text style={styles.avatarText}>{vendor.avatarInitials}</Text>
-          <View style={styles.onlineIndicator}></View>
+          <View style={styles.greenIndicator} />
         </View>
-        <View style={styles.vendorDetails}>
-          <Text style={styles.vendorName}>{vendor.name}</Text>
-          <Text style={styles.vendorLocation}>{vendor.location}</Text>
-        </View>
+        <Text style={styles.vendorName}>{vendor.name}</Text>
+        <Text style={styles.vendorLocation}>{vendor.location}</Text>
       </View>
 
-      {/* Grey Line Above Distributor Information */}
+      {/* Separator */}
       <View style={styles.separator} />
 
       {/* Distributor Information */}
-      <View style={styles.distributorInfo}>
-        <Text style={styles.distributorText}>{vendor.distributorFor}</Text>
-      </View>
+      <Text style={styles.distributorText}>{vendor.distributorFor}</Text>
 
-      {/* Call & Location Buttons (Vertical Layout) */}
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleCallVendor}>
-          <Ionicons name="call-outline" size={20} color="#064e3b" />
-          <Text style={styles.buttonText}>Call Vendor</Text>
+      {/* Call & Location Buttons */}
+      <View style={styles.buttonsContainerVertical}>
+        <TouchableOpacity style={styles.callButton} onPress={handleCallVendor}>
+          <Ionicons name="call-outline" size={18} color="#064e3b" />
+          <Text style={styles.smallButtonText}>Call</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleStoreLocation}>
-          <Ionicons name="location-outline" size={20} color="#064e3b" />
-          <Text style={styles.buttonText}>Store Location</Text>
+        <TouchableOpacity
+          style={styles.smallButton}
+          onPress={handleStoreLocation}
+        >
+          <Ionicons name="location-outline" size={18} color="#064e3b" />
+          <Text style={styles.smallButtonText}>Location</Text>
         </TouchableOpacity>
       </View>
 
@@ -83,12 +98,12 @@ const VendorDetailsScreen = () => {
             </Text>
           </View>
           <View style={styles.subscriptionActions}>
-            <Text style={styles.statusText}>
-              {vendor.activeSubscription.status}
-            </Text>
             <TouchableOpacity style={styles.manageButton}>
               <Text style={styles.manageButtonText}>Manage</Text>
             </TouchableOpacity>
+            <Text style={styles.scheduledBadge}>
+              {vendor.activeSubscription.status}
+            </Text>
           </View>
         </View>
       </View>
@@ -99,99 +114,91 @@ const VendorDetailsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: "#fff",
+    padding: 16,
   },
-  vendorInfo: {
-    flexDirection: "row",
+  vendorInfoContainer: {
     alignItems: "center",
     marginBottom: 16,
-    padding: 36,
   },
   avatarContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     backgroundColor: "#A020F0",
+    marginBottom: 8,
+    position: "relative",
   },
   avatarText: {
     color: "#fff",
+    fontSize: 32,
     fontWeight: "bold",
-    fontSize: 24,
-    textAlign: "center",
-    lineHeight: 60,
   },
-  onlineIndicator: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    width: 12,
-    height: 12,
+  greenIndicator: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     backgroundColor: "#00FF00",
-    borderRadius: 6,
+    position: "absolute",
+    bottom: 2,
+    right: 2,
     borderWidth: 2,
     borderColor: "#fff",
   },
-  vendorDetails: {
-    marginLeft: 16,
-  },
   vendorName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
   },
   vendorLocation: {
-    color: "#888",
     fontSize: 14,
+    color: "#888",
   },
-  /* Separator (Grey Line) */
   separator: {
     height: 1,
     backgroundColor: "#E0E0E0",
-    marginBottom: 16,
-  },
-  distributorInfo: {
-    marginBottom: 16,
+    marginVertical: 16,
   },
   distributorText: {
+    textAlign: "center",
     fontSize: 14,
     color: "#555",
-  },
-  /* Vertical Button Container */
-  buttonsContainer: {
     marginBottom: 16,
   },
-  button: {
+  buttonsContainerVertical: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  smallButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    marginBottom: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 56,
     borderWidth: 1,
-    borderColor: "#064e3b",
+    borderColor: "#008000",
     borderRadius: 5,
-    margin: 8,
+    marginVertical: 8,
   },
-  manageButton: {
-    backgroundColor: "#064e3b",
+  callButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 69,
+    borderWidth: 1,
+    borderColor: "#008000",
     borderRadius: 5,
-    padding: 8,
+    marginVertical: 8,
   },
-  manageButtonText: {
-    color: "#fff",
-  },
-  statusText: {
-    color: "#32CD32",
-    fontSize: 12,
-    marginBottom: 8,
-    alignSelf: "flex-start", // Align the status text to the bottom left
-  },
-  buttonText: {
-    marginLeft: 8,
-    color: "#000000",
+  smallButtonText: {
+    marginLeft: 6,
+    color: "#000",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 14,
   },
   subscriptionContainer: {
     marginTop: 16,
@@ -203,13 +210,13 @@ const styles = StyleSheet.create({
   },
   subscriptionCard: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
     padding: 16,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: "#c1e5bb",
     borderRadius: 10,
-    backgroundColor: "#F8F8F8",
-    justifyContent: "space-between",
+    backgroundColor: "#ffffff",
   },
   subscriptionImage: {
     width: 60,
@@ -220,36 +227,37 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 16,
   },
-  subscriptionQuantity: {
-    fontSize: 14,
-    color: "#888",
-  },
   subscriptionSchedule: {
     fontSize: 12,
     color: "#888",
   },
   subscriptionActions: {
-    justifyContent: "flex-end", // Align to the bottom
-    alignItems: "flex-start", // Align to the left
-    flexDirection: "column", // Ensure the items are stacked vertically
+    justifyContent: "space-between",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    flex: 1,
   },
-  statusText: {
-    color: "#32CD32",
+  scheduledBadge: {
+    backgroundColor: "#e1f5e4",
+    color: "#064e3b",
+    fontWeight: "bold",
     fontSize: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    textAlign: "center",
+    marginTop: "auto",
     marginBottom: 8,
-    alignSelf: "flex-start", // Align the status text to the bottom left
   },
   manageButton: {
-    backgroundColor: "#F0F0F0",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    alignSelf: "flex-end",
+    backgroundColor: "#064e3b",
     borderRadius: 5,
-    alignSelf: "flex-end", // Keep the manage button on the right
+    padding: 8,
   },
   manageButtonText: {
-    fontSize: 12,
-    color: "#000",
+    color: "#fff",
   },
 });
 
-export default VendorDetailsScreen;
+export default VendorDetails;

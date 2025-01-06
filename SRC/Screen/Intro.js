@@ -7,32 +7,35 @@ const image2 = require('./images/pg2.png');
 const image3 = require('./images/pg3.png'); 
 const image4 = require('./images/pg4.png'); 
 
-const SlideShow = () => {
-  const { width } = Dimensions.get('window');
+const Intro = () => {
+  const { width } = Dimensions.get("window");
   const slides = [
     {
-      id: '1',
-      title: 'Your Essentials, Just a Tap Away',
-      description: 'Water, milk, groceries—delivered to your door with a smile.',
-      image: image1, 
+      id: "1",
+      title: "Your Essentials, Just a Tap Away",
+      description:
+        "Water, milk, groceries—delivered to your door with a smile.",
+      image: image1,
     },
     {
-      id: '2',
-      title: 'Freshness in Every Drop',
-      description: 'Get top-quality products straight from the source to your doorstep.',
-      image: image2, 
+      id: "2",
+      title: "Freshness in Every Drop",
+      description:
+        "Get top-quality products straight from the source to your doorstep.",
+      image: image2,
     },
     {
-      id: '3',
-      title: 'Set It and Forget It',
-      description: 'Customize your delivery schedule, stay stocked effortlessly.',
+      id: "3",
+      title: "Set It and Forget It",
+      description:
+        "Customize your delivery schedule, stay stocked effortlessly.",
       image: image3,
     },
     {
-      id: '4',
-      title: 'Total Control, Zero Hassle',
-      description: 'Easily track and adjust your deliveries in one app.',
-      image: image4, 
+      id: "4",
+      title: "Total Control, Zero Hassle",
+      description: "Easily track and adjust your deliveries in one app.",
+      image: image4,
     },
   ];
 
@@ -46,7 +49,7 @@ const SlideShow = () => {
       flatListRef.current.scrollToIndex({ index: nextIndex });
       setCurrentIndex(nextIndex);
     } else {
-      navigation.navigate('Phone Number Verification');
+      navigation.navigate("PhoneVerification");
     }
   };
 
@@ -79,7 +82,7 @@ const SlideShow = () => {
             key={index}
             style={[
               styles.dot,
-              { backgroundColor: index === currentIndex ? '#000' : '#ddd' },
+              { backgroundColor: index === currentIndex ? "#000" : "#ddd" },
             ]}
           />
         ))}
@@ -89,11 +92,8 @@ const SlideShow = () => {
         style={styles.leftTouchable}
         onPress={goToPreviousSlide}
       />
-      
-      <TouchableOpacity
-        style={styles.rightTouchable}
-        onPress={goToNextSlide}
-      />
+
+      <TouchableOpacity style={styles.rightTouchable} onPress={goToNextSlide} />
 
       <FlatList
         ref={flatListRef}
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SlideShow;
+export default Intro;
