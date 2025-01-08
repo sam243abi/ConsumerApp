@@ -28,7 +28,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
         <Stack.Screen name="OTP" component={OtpVerification} />

@@ -3,6 +3,7 @@ import {View,Text,StyleSheet,TextInput,Image,TouchableOpacity,Keyboard,Animated,
 import { globalStyles } from './styles/global';
 import { navigateTo } from './RoutHub/Routs';
 import colors from './components/colors';
+import { handlePhoneNumberChange } from './Functions/utility';
 
 const PhoneVerification = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -44,11 +45,6 @@ const PhoneVerification = ({ navigation }) => {
     }).start();
   };
 
-  const handlePhoneNumberChange = (text) => {
-    const formattedText = text.replace(/[^0-9]/g, "");
-    setPhoneNumber(formattedText);
-  };
-
   const handleVerifyOTP = () => {
     if (!isChecked) {
       alert("Please accept the Terms and Conditions.");
@@ -81,7 +77,8 @@ const PhoneVerification = ({ navigation }) => {
             keyboardType="phone-pad"
             maxLength={10}
             value={phoneNumber}
-            onChangeText={handlePhoneNumberChange}
+            onChangeText={(text) => setPhoneNumber(handlePhoneNumberChange(text))}
+
           />
         </View>
         {errorMessage ? (

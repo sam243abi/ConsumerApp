@@ -50,10 +50,6 @@ const Profile = ({ navigation }) => {
     setDob(formatted);
   };
 
-  // const validateEmail = (email) => {
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return emailRegex.test(email);
-  // };
 
   const validateFields = () => {
     const errors = {
@@ -69,12 +65,6 @@ const Profile = ({ navigation }) => {
     if (!lastName) {
       errors.lastName = "*Please enter your last name.";
     }
-    // if (!email) {
-    //   errors.email = '*Please enter your email.';
-    // } else if (!validateEmail(email)) {
-    //   Alert.alert('Invalid Email', 'Provide a valid email ID');
-    //   errors.email = '*Invalid email format.';
-    // }
     if (!dob) {
       errors.dob = "*Please enter your date of birth.";
     }
@@ -296,7 +286,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'flex-start',
     marginLeft: 15,
-    transform: [{ translateY: -160 }],
+    transform: [{ translateY: -160}],
   },
 });
 

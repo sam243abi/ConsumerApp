@@ -3,6 +3,7 @@ import {View,Text,StyleSheet,TextInput,TouchableOpacity,KeyboardAvoidingView,Scr
 import { globalStyles } from './styles/global';
 import {navigateTo } from './RoutHub/Routs'
 import colors from './components/colors';
+import { handleOtpChange } from './Functions/utility';
 
 const OTP = ({ navigation }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -54,18 +55,6 @@ const OTP = ({ navigation }) => {
     };
   }, []);
 
-  const handleOtpChange = (index, value) => {
-    if (/^[0-9]$/.test(value) || value === "") {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-      setError(false);
-      if (value !== "" && index < otp.length - 1) {
-        inputRefs.current[index + 1].focus();
-      }
-    }
-  };
-
   const handleResendOtp = () => {
     setTimer(60);
     alert("OTP has been resent!");
@@ -94,26 +83,29 @@ const OTP = ({ navigation }) => {
           <View style={styles.otpContainer}>
             {otp.map((digit, index) => (
               <TextInput
-                key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
-                style={[
-                  styles.otpInput,
-                  error && otp[index] === "" ? styles.inputError : null,
-                ]}
-                keyboardType="numeric"
-                maxLength={1}
-                value={digit}
-                onChangeText={(value) => handleOtpChange(index, value)}
-                onKeyPress={({ nativeEvent }) => {
-                  if (
-                    nativeEvent.key === "Backspace" &&
-                    index > 0 &&
-                    otp[index] === ""
-                  ) {
-                    inputRefs.current[index - 1].focus();
-                  }
-                }}
-              />
+              key={index}
+              ref={(el) => (inputRefs.current[index] = el)}
+              style={[
+                styles.otpInput,
+                error && otp[index] === "" ? styles.inputError : null,
+              ]}
+              keyboardType="numeric"
+              maxLength={1}
+              value={digit}
+              onChangeText={(value) =>
+                handleOtpChange(index, value, otp, setOtp, setError, inputRefs)
+              }
+              onKeyPress={({ nativeEvent }) => {
+                if (
+                  nativeEvent.key === "Backspace" &&
+                  index > 0 &&
+                  otp[index] === ""
+                ) {
+                  inputRefs.current[index - 1].focus();
+                }
+              }}
+            />
+            
             ))}
           </View>
           {error && (
