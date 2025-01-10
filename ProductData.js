@@ -193,3 +193,64 @@ export const ProductData = {
       },
     ],
   };
+  export const DailySupplies = [
+    {
+      id: "1",
+      name: "Water Can",
+      image: require("./SRC/Screen/images/water-can.png"),
+      screen: "Product",
+      type: "watercan",
+    },
+    {
+      id: "2",
+      name: "Milk",
+      image: require("./SRC/Screen/images/milk-Bottle.png"),
+      screen: "Product",
+      type: "milk",
+    },
+    {
+      id: "3",
+      name: "Flowers",
+      image: require("./SRC/Screen/images/flowers.png"),
+      screen: "FlowersScreen",
+    },
+    {
+      id: "4",
+      name: "Spinach",
+      image: require("./SRC/Screen/images/spinach.png"),
+      screen: "SpinachScreen",
+    },
+    {
+      id: "5",
+      name: "Post-Workout",
+      image: require("./SRC/Screen/images/post-workout.png"),
+      screen: "PostWorkoutScreen",
+    },
+    {
+      id: "6",
+      name: "Tender Coconut",
+      image: require("./SRC/Screen/images/tender-coconut.png"),
+      screen: "TenderCoconutScreen",
+    },
+  ];
+  
+  export const OtherServices = [
+    {
+      id: "1",
+      name: "Laundry",
+      image: require("./SRC/Screen/images/laundry.png"),
+      screen: "LaundryScreen",
+    },
+    {
+      id: "2",
+      name: "Medicines",
+      image: require("./SRC/Screen/images/medicines.png"),
+      screen: "MedicinesScreen",
+    },
+    {
+      id: "3",
+      name: "Magazines",
+      image: require("./SRC/Screen/images/magazines.png"),
+      screen: "MagazinesScreen",
+    },
+  ];

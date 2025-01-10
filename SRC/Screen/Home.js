@@ -12,73 +12,12 @@ import {
 } from "react-native";
 import BottomNav from "./components/BottomNav";
 import colors from "./components/colors";
+import { DailySupplies, OtherServices } from "../../ProductData";
 
 const Home = ({ navigation }) => {
-  const dailySupplies = [
-    {
-      id: "1",
-      name: "Water Can",
-      image: require("./images/water-can.png"),
-      screen: "Product",
-      type: "watercan",
-    },
-    {
-      id: "2",
-      name: "Milk",
-      image: require("./images/milk-Bottle.png"),
-      screen: "Product",
-      type: "milk", // Updated to match the type from the JSON file
-    },
-    {
-      id: "3",
-      name: "Flowers",
-      image: require("./images/flowers.png"),
-      screen: "FlowersScreen",
-    },
-    {
-      id: "4",
-      name: "Spinach",
-      image: require("./images/spinach.png"),
-      screen: "SpinachScreen",
-    },
-    {
-      id: "5",
-      name: "Post-Workout",
-      image: require("./images/post-workout.png"),
-      screen: "PostWorkoutScreen",
-    },
-    {
-      id: "6",
-      name: "Tender Coconut",
-      image: require("./images/tender-coconut.png"),
-      screen: "TenderCoconutScreen",
-    },
-  ];
-
-  const otherServices = [
-    {
-      id: "1",
-      name: "Laundry",
-      image: require("./images/laundry.png"),
-      screen: "LaundryScreen",
-    },
-    {
-      id: "2",
-      name: "Medicines",
-      image: require("./images/medicines.png"),
-      screen: "MedicinesScreen",
-    },
-    {
-      id: "3",
-      name: "Magazines",
-      image: require("./images/magazines.png"),
-      screen: "MagazinesScreen",
-    },
-  ];
-
   const renderItem = ({ item }) => (
     <Pressable
-      onPress={() => navigation.navigate(item.screen, { type: item.type })} // Pass the type as a parameter
+      onPress={() => navigation.navigate(item.screen, { type: item.type })}
       style={styles.itemContainer}
     >
       <View style={styles.imageWrapper}>
@@ -100,7 +39,7 @@ const Home = ({ navigation }) => {
         description: "Subscribe to Fresh Water Today!",
         image: require("./images/aquafina.png"),
         screen: "Product",
-        type: "watercan", 
+        type: "watercan",
       },
       {
         id: "2",
@@ -127,7 +66,7 @@ const Home = ({ navigation }) => {
     };
 
     useEffect(() => {
-      const interval = setInterval(scrollToNext, 3000); 
+      const interval = setInterval(scrollToNext, 3000);
       return () => clearInterval(interval);
     }, [activeIndex]);
 
@@ -185,11 +124,11 @@ const Home = ({ navigation }) => {
     );
   };
 
-  const DailySupplies = () => (
+  const DailySuppliesSection = () => (
     <View>
       <Text style={styles.sectionTitle}>Daily Supplies</Text>
       <FlatList
-        data={dailySupplies}
+        data={DailySupplies}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={3}
@@ -198,11 +137,11 @@ const Home = ({ navigation }) => {
     </View>
   );
 
-  const OtherServices = () => (
+  const OtherServicesSection = () => (
     <View>
       <Text style={styles.sectionTitle}>Other Services</Text>
       <FlatList
-        data={otherServices}
+        data={OtherServices}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={3}
@@ -221,8 +160,8 @@ const Home = ({ navigation }) => {
           ListHeaderComponent={<HeaderAndBanner />}
           ListFooterComponent={
             <>
-              <DailySupplies />
-              <OtherServices />
+              <DailySuppliesSection />
+              <OtherServicesSection />
             </>
           }
           data={[]}
