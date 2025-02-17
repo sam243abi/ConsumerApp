@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -32,6 +32,12 @@ const Subscribe = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { product } = route.params || {}; // Ensure safe access to params
+
+  const [expandedSection, setExpandedSection] = useState(null);
+
+  const toggleSection = (section) => {
+    setExpandedSection(expandedSection === section ? null : section);
+  };
 
   if (!product) {
     return (
@@ -75,11 +81,11 @@ const Subscribe = () => {
                 source={imageMap[item.image]}
                 style={styles.slideImage}
               />
-            ): 
-            
-            (
+            ) : (
               <View key={index} style={styles.slideFallbackContainer}>
-                <Text style={styles.imageFallbackText}>No image available</Text>
+                <Text style={styles.imageFallbackText}>
+                  No image available
+                </Text>
               </View>
             )
           )}
@@ -93,6 +99,35 @@ const Subscribe = () => {
           <Text style={styles.productDescription}>{product.description}</Text>
           <Text style={styles.productPrice}>{product.price}</Text>
         </View>
+
+        {/* Collapsible Sections */}
+        {["Shelf Life", "Certifications", "Product Description"].map(
+          (section, index) => (
+            <View key={index} style={styles.collapsibleSection}>
+              <TouchableOpacity
+                onPress={() => toggleSection(section)}
+                style={styles.collapsibleHeader}
+              >
+                <Text style={styles.collapsibleHeaderText}>{section}</Text>
+              </TouchableOpacity>
+              {expandedSection === section && (
+                <View style={styles.collapsibleContent}>
+                  <Text>
+                    {section === "Shelf Life" &&
+                      product.shelfLife &&
+                      `Shelf Life: ${product.shelfLife}`}
+                    {section === "Certifications" &&
+                      product.certifications &&
+                      `Certifications: ${product.certifications}`}
+                    {section === "Product Description" &&
+                      `Description: ${product.description}`}
+                  </Text>
+                </View>
+              )}
+              <View style={styles.divider} />
+            </View>
+          )
+        )}
 
         {/* Related Products */}
         <View style={styles.relatedProductsSection}>
@@ -285,6 +320,25 @@ const styles = StyleSheet.create({
   imageFallbackText: {
     textAlign: "center",
     color: "gray",
+  },
+  collapsibleSection: {
+    marginVertical: 5,
+  },
+  collapsibleHeader: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  collapsibleHeaderText: {
+    fontSize: 16,
+  },
+  collapsibleContent: {
+    padding: 15,
+    backgroundColor: colors.background,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginVertical: 10,
   },
 });
 
